@@ -1,12 +1,10 @@
 import os
 import sys
 import json
-import numpy as np
-import pandas as pd
-import joblib
+import re
 from flask import Flask, render_template, request, jsonify
 
-# Compute absolute base path for Vercel Serverless compatibility
+# Compute base directories
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
@@ -18,25 +16,34 @@ app = Flask(
     static_folder=STATIC_DIR
 )
 
-# Global variables for model and metadata loaded once at startup
-MODEL = None
+# Global variables for model and metadata
+XGB_NATIVE_MODEL = None
+JSON_MODEL_DATA = None
 STATION_MAP = {}
 STATION_LIST = []
-MODEL_META = {}
 
 def load_artifacts():
-    global MODEL, STATION_MAP, STATION_LIST, MODEL_META
+    global XGB_NATIVE_MODEL, JSON_MODEL_DATA, STATION_MAP, STATION_LIST
     try:
+        # 1. Try loading native XGBoost model via joblib if available
         model_path = os.path.join(MODEL_DIR, 'xgboost_model.pkl')
         if not os.path.exists(model_path):
             model_path = os.path.join(BASE_DIR, '..', 'ml-model', 'groundwater_model.joblib')
 
         if os.path.exists(model_path):
-            MODEL = joblib.load(model_path)
-            print(f"Successfully loaded XGBoost model from {model_path}")
-        else:
-            print(f"Warning: Model file not found at {model_path}")
+            try:
+                import joblib
+                XGB_NATIVE_MODEL = joblib.load(model_path)
+            except Exception as ex:
+                print(f"Native model load fallback: {ex}")
 
+        # 2. Load lightweight JSON model dump for zero-dependency Vercel serverless execution
+        json_model_path = os.path.join(MODEL_DIR, 'model.json')
+        if os.path.exists(json_model_path):
+            with open(json_model_path, 'r') as f:
+                JSON_MODEL_DATA = json.load(f)
+
+        # 3. Load station metadata
         stations_file = os.path.join(MODEL_DIR, 'stations.json')
         if not os.path.exists(stations_file):
             stations_file = os.path.join(BASE_DIR, '..', 'ml-model', 'stations.json')
@@ -60,8 +67,57 @@ def load_artifacts():
     except Exception as e:
         print(f"Error loading model artifacts: {e}")
 
-# Load model artifacts once when module is imported
+# Load artifacts once at startup
 load_artifacts()
+
+def predict_lightweight(row_dict):
+    """Pure Python lightweight XGBoost tree evaluator (0MB dependencies, sub-millisecond)."""
+    feats = [
+        'Year', 'Month', 'Day', 'Hour', 'DayOfYear',
+        'GWL_lag1', 'GWL_lag2', 'GWL_lag4', 'GWL_diff_1',
+        'GWL_roll_mean_24h', 'GWL_roll_mean_48h', 'GWL_roll_std_24h',
+        'Station_Code'
+    ]
+
+    # Native XGBoost model evaluation
+    if XGB_NATIVE_MODEL is not None:
+        try:
+            import pandas as pd
+            df_single = pd.DataFrame([row_dict])[feats]
+            return float(XGB_NATIVE_MODEL.predict(df_single)[0])
+        except Exception:
+            pass
+
+    # Pure Python JSON tree evaluator
+    if JSON_MODEL_DATA is not None:
+        trees = JSON_MODEL_DATA['learner']['gradient_booster']['model']['trees']
+        base_score_raw = str(JSON_MODEL_DATA['learner']['learner_model_param'].get('base_score', '0.5'))
+        clean_num = re.search(r"[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?", base_score_raw)
+        base_score = float(clean_num.group(0)) if clean_num else 0.5
+
+        vec = [float(row_dict.get(f, 0.0)) for f in feats]
+        score = base_score
+
+        for tree in trees:
+            node = 0
+            lefts = tree['left_children']
+            rights = tree['right_children']
+            splits = tree['split_indices']
+            conds = tree['split_conditions']
+            weights = tree['base_weights']
+
+            while lefts[node] != -1:
+                idx = splits[node]
+                val = vec[idx]
+                if val < conds[node]:
+                    node = lefts[node]
+                else:
+                    node = rights[node]
+            score += weights[node]
+
+        return float(score)
+
+    raise RuntimeError("No valid ML model artifact available.")
 
 @app.route('/')
 def home():
@@ -76,27 +132,18 @@ def health():
     return jsonify({
         'status': 'UP',
         'service': 'Flask XGBoost Groundwater Level Prediction API',
-        'model_loaded': MODEL is not None,
+        'model_loaded': (XGB_NATIVE_MODEL is not None) or (JSON_MODEL_DATA is not None),
         'stations_count': len(STATION_LIST)
     })
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    if MODEL is None:
-        load_artifacts()
-        if MODEL is None:
-            return jsonify({
-                'status': 'error',
-                'message': 'ML Model not loaded on server.'
-            }), 500
-
     try:
         if request.is_json:
             data = request.get_json()
         else:
             data = request.form.to_dict()
 
-        # Station & Code Resolution
         station_name = str(data.get('station', '')).strip()
         station_code = data.get('station_code') or data.get('stationCode')
 
@@ -105,46 +152,34 @@ def predict():
         else:
             station_code = int(station_code)
 
-        # Date & Temporal Inputs
         year = int(data.get('year', 2024))
         month = int(data.get('month', 6))
         day = int(data.get('day', 15))
         hour = int(data.get('hour', 12))
 
-        # Auto-compute DayOfYear if missing
+        # Approximate DayOfYear calculation without requiring heavy pandas
         day_of_year = data.get('day_of_year') or data.get('dayOfYear')
         if day_of_year is None or int(day_of_year) <= 0:
-            try:
-                day_of_year = pd.Timestamp(year=year, month=month, day=day).dayofyear
-            except Exception:
-                day_of_year = 167
+            days_in_months = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+            if (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0):
+                days_in_months[2] = 29
+            day_of_year = sum(days_in_months[:month]) + day
         else:
             day_of_year = int(day_of_year)
 
-        # GWL Lags
         gwl_lag1 = float(data.get('gwl_lag1') or data.get('gwlLag1') or 15.2)
         gwl_lag2 = float(data.get('gwl_lag2') or data.get('gwlLag2') or 15.4)
         gwl_lag4 = float(data.get('gwl_lag4') or data.get('gwlLag4') or 15.7)
 
-        # GWL Diff 1
         gwl_diff_1 = data.get('gwl_diff_1') or data.get('gwlDiff1')
         if gwl_diff_1 is None or gwl_diff_1 == '':
             gwl_diff_1 = gwl_lag1 - gwl_lag2
         else:
             gwl_diff_1 = float(gwl_diff_1)
 
-        # Rolling Statistics
         gwl_roll_mean_24h = float(data.get('gwl_roll_mean_24h') or data.get('gwlRollMean24h') or gwl_lag1)
         gwl_roll_mean_48h = float(data.get('gwl_roll_mean_48h') or data.get('gwlRollMean48h') or ((gwl_lag1 + gwl_lag2) / 2.0))
         gwl_roll_std_24h = float(data.get('gwl_roll_std_24h') or data.get('gwlRollStd24h') or 0.05)
-
-        # Feature Order matching training EXACTLY
-        features_order = [
-            'Year', 'Month', 'Day', 'Hour', 'DayOfYear',
-            'GWL_lag1', 'GWL_lag2', 'GWL_lag4',
-            'GWL_diff_1', 'GWL_roll_mean_24h', 'GWL_roll_mean_48h', 'GWL_roll_std_24h',
-            'Station_Code'
-        ]
 
         row = {
             'Year': year,
@@ -162,11 +197,9 @@ def predict():
             'Station_Code': station_code
         }
 
-        df_input = pd.DataFrame([row])[features_order]
-        predicted_val = float(MODEL.predict(df_input)[0])
+        predicted_val = predict_lightweight(row)
         predicted_val_rounded = round(predicted_val, 4)
 
-        # Water level risk classification
         if predicted_val < 5.0:
             classification = "Shallow Water Table (High Surface Runoff Risk)"
             status_class = "danger"
@@ -193,7 +226,7 @@ def predict():
 
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest' or request.is_json:
             return jsonify(response)
-        
+
         return render_template(
             'index.html',
             stations=STATION_LIST,
