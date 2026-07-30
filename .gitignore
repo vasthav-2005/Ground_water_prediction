@@ -1,0 +1,30 @@
+# Python virtual environments & bytecode
+myvenv/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.joblib
+*.pkl
+
+# Node.js dependencies & build outputs
+node_modules/
+frontend/node_modules/
+frontend/dist/
+dist/
+
+# Java build artifacts & Maven wrapper downloads
+backend/target/
+target/
+backend/.mvn/apache-maven-3.9.6/
+backend/.mvn/wrapper/maven-wrapper.jar
+
+# Deployment & IDE temp files
+.vercel/
+frontend/.vercel/
+groundwater_prediction/.vercel/
+.idea/
+.vscode/
+*.log
+.DS_Store

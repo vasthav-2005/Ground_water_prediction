@@ -1,0 +1,96 @@
+{
+  "stations": [
+    {
+      "code": 0,
+      "name": "Amlarem"
+    },
+    {
+      "code": 1,
+      "name": "Barengapara"
+    },
+    {
+      "code": 2,
+      "name": "Byrnihat"
+    },
+    {
+      "code": 3,
+      "name": "Damas_1"
+    },
+    {
+      "code": 4,
+      "name": "Jowai"
+    },
+    {
+      "code": 5,
+      "name": "Khliehriat"
+    },
+    {
+      "code": 6,
+      "name": "Latyrke"
+    },
+    {
+      "code": 7,
+      "name": "Mairang"
+    },
+    {
+      "code": 8,
+      "name": "Mawkyrwat_1"
+    },
+    {
+      "code": 9,
+      "name": "Nongstoin_1"
+    },
+    {
+      "code": 10,
+      "name": "Panchiring"
+    },
+    {
+      "code": 11,
+      "name": "Phulbari_1"
+    },
+    {
+      "code": 12,
+      "name": "Rongjeng_1"
+    },
+    {
+      "code": 13,
+      "name": "Saiden"
+    },
+    {
+      "code": 14,
+      "name": "Shillong"
+    },
+    {
+      "code": 15,
+      "name": "Soksan"
+    },
+    {
+      "code": 16,
+      "name": "Williamnagar"
+    },
+    {
+      "code": 17,
+      "name": "Zikzak_1"
+    }
+  ],
+  "station_map": {
+    "Amlarem": 0,
+    "Barengapara": 1,
+    "Byrnihat": 2,
+    "Damas_1": 3,
+    "Jowai": 4,
+    "Khliehriat": 5,
+    "Latyrke": 6,
+    "Mairang": 7,
+    "Mawkyrwat_1": 8,
+    "Nongstoin_1": 9,
+    "Panchiring": 10,
+    "Phulbari_1": 11,
+    "Rongjeng_1": 12,
+    "Saiden": 13,
+    "Shillong": 14,
+    "Soksan": 15,
+    "Williamnagar": 16,
+    "Zikzak_1": 17
+  }
+}

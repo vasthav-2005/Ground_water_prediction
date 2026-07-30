@@ -1,0 +1,10 @@
+D:\GW Prediction\backend\src\main\java\com\gwprediction\config\CorsConfig.java
+D:\GW Prediction\backend\src\main\java\com\gwprediction\dto\StationDto.java
+D:\GW Prediction\backend\src\main\java\com\gwprediction\controller\PredictionController.java
+D:\GW Prediction\backend\src\main\java\com\gwprediction\exception\GlobalExceptionHandler.java
+D:\GW Prediction\backend\src\main\java\com\gwprediction\service\PythonBridgeService.java
+D:\GW Prediction\backend\src\main\java\com\gwprediction\controller\StationController.java
+D:\GW Prediction\backend\src\main\java\com\gwprediction\dto\PredictionRequest.java
+D:\GW Prediction\backend\src\main\java\com\gwprediction\GwPredictionApplication.java
+D:\GW Prediction\backend\src\main\java\com\gwprediction\service\PredictionService.java
+D:\GW Prediction\backend\src\main\java\com\gwprediction\dto\PredictionResponse.java

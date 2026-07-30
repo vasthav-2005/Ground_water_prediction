@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Groundwater Level Telemetry Prediction System using XGBoost & Flask">
+    <title>Groundwater Level Telemetry Predictor | XGBoost ML</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="app-wrapper">
+        <!-- Navigation Header -->
+        <header class="app-header glass-card mb-4">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="brand-icon">
+                        <i class="bi bi-droplet-half fs-2 text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="brand-title m-0">
+                            Groundwater Level Telemetry Intelligence
+                            <span class="badge badge-ml ms-2">Flask + XGBoost</span>
+                        </h1>
+                        <p class="brand-subtitle m-0">Hydrological telemetry analytics & XGBoost groundwater level forecasting for Meghalaya stations</p>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <span class="status-indicator online"><i class="bi bi-circle-fill me-1"></i> API Ready</span>
+                    <span class="status-indicator model"><i class="bi bi-cpu me-1"></i> XGBoost Regressor</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Error Alert Banner -->
+        <div id="errorAlert" class="alert alert-danger glass-alert d-none align-items-center justify-content-between" role="alert">
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-exclamation-triangle-fill text-danger fs-5"></i>
+                <span id="errorMessageText">Validation Error</span>
+            </div>
+            <button type="button" class="btn-close btn-close-white" onclick="hideError()"></button>
+        </div>
+
+        <div class="row g-4">
+            <!-- Left Column: Input Form -->
+            <div class="col-lg-7">
+                <div class="glass-card p-4">
+                    
+                    <!-- Quick Preset Scenarios -->
+                    <div class="preset-section mb-4">
+                        <label class="form-label text-muted small fw-bold mb-2">
+                            <i class="bi bi-magic text-primary me-1"></i> Quick Load Sample Scenarios:
+                        </label>
+                        <div class="d-flex flex-wrap gap-2">
+                            <button type="button" class="btn btn-preset" onclick="loadPreset('shillong')">
+                                <i class="bi bi-geo-alt me-1"></i> Shillong (Monsoon)
+                            </button>
+                            <button type="button" class="btn btn-preset" onclick="loadPreset('cherrapunji')">
+                                <i class="bi bi-geo-alt me-1"></i> Cherrapunji (November)
+                            </button>
+                            <button type="button" class="btn btn-preset" onclick="loadPreset('jowai')">
+                                <i class="bi bi-geo-alt me-1"></i> Jowai (Spring)
+                            </button>
+                            <button type="button" class="btn btn-preset" onclick="loadPreset('tura')">
+                                <i class="bi bi-geo-alt me-1"></i> Tura (Summer)
+                            </button>
+                        </div>
+                    </div>
+
+                    <form id="predictionForm" action="/predict" method="POST">
+                        
+                        <!-- Section 1: Station & Month -->
+                        <div class="form-section-title">
+                            <i class="bi bi-sliders text-primary"></i> Telemetry Parameters
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-12">
+                                <label for="station" class="form-label">Telemetry Station Name</label>
+                                <select class="form-select custom-input" id="station" name="station" required>
+                                    {% for st in stations %}
+                                        <option value="{{ st.name }}" data-code="{{ st.code }}">{{ st.name }} (Code: {{ st.code }})</option>
+                                    {% endfor %}
+                                </select>
+                                <input type="hidden" id="stationCode" name="stationCode" value="14">
+                            </div>
+
+                            <div class="col-12">
+                                <label for="month" class="form-label">Select Month</label>
+                                <select class="form-select custom-input" id="month" name="month" required>
+                                    <option value="1">January (Month 1)</option>
+                                    <option value="2">February (Month 2)</option>
+                                    <option value="3">March (Month 3)</option>
+                                    <option value="4">April (Month 4)</option>
+                                    <option value="5">May (Month 5)</option>
+                                    <option value="6" selected>June (Month 6)</option>
+                                    <option value="7">July (Month 7)</option>
+                                    <option value="8">August (Month 8)</option>
+                                    <option value="9">September (Month 9)</option>
+                                    <option value="10">October (Month 10)</option>
+                                    <option value="11">November (Month 11)</option>
+                                    <option value="12">December (Month 12)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Form Action Buttons -->
+                        <div class="d-flex gap-3 mt-4">
+                            <button type="submit" id="btnSubmit" class="btn btn-primary-custom flex-grow-1">
+                                <i class="bi bi-lightning-charge-fill me-1"></i> Predict Groundwater Level
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary-custom" onclick="resetForm()">
+                                <i class="bi bi-arrow-counterclockwise me-1"></i> Reset
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+            <!-- Right Column: Prediction Results -->
+            <div class="col-lg-5">
+                <div class="glass-card p-4 h-100 d-flex flex-column justify-content-between">
+                    
+                    <div>
+                        <div class="text-center pb-3 border-bottom border-secondary-subtle">
+                            <span class="text-uppercase tracking-wider small fw-bold text-primary">XGBoost Inference Engine</span>
+                            
+                            <div class="result-badge-container my-3">
+                                <div id="predictedValDisplay" class="result-number">
+                                    {% if prediction %}
+                                        {{ "%.2f"|format(prediction.predicted_gwl_meter) }}
+                                    {% else %}
+                                        --.--
+                                    {% endif %}
+                                </div>
+                                <div class="result-unit">meters (depth to water table)</div>
+                            </div>
+
+                            <div id="statusPillDisplay" class="status-pill {% if prediction %}{{ prediction.status_class }}{% else %}muted{% endif %}">
+                                <i class="bi bi-info-circle me-1"></i>
+                                <span id="statusText">
+                                    {% if prediction %}
+                                        {{ prediction.classification }}
+                                    {% else %}
+                                        Awaiting input data submission
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Model Metrics Row -->
+                        <div class="row g-2 text-center my-4">
+                            <div class="col-4">
+                                <div class="metric-box">
+                                    <div class="metric-title">MAE Error</div>
+                                    <div class="metric-val text-info">0.914 m</div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="metric-box">
+                                    <div class="metric-title">RMSE Error</div>
+                                    <div class="metric-val text-cyan">3.727 m</div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="metric-box">
+                                    <div class="metric-title">Estimators</div>
+                                    <div class="metric-val text-success">300 Trees</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Evaluated Features Breakdown -->
+                        <div id="evaluatedDetails" class="evaluated-box mt-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="small fw-bold text-muted">Feature Vector Evaluation</span>
+                                <span class="badge bg-secondary-subtle text-light">XGBoost Engine</span>
+                            </div>
+                            <div class="row g-2 small text-light-50">
+                                <div class="col-6">Station: <strong id="resStation" class="text-white">Shillong</strong></div>
+                                <div class="col-6">Selected Month: <strong id="resMonth" class="text-white">June</strong></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Footer Note -->
+                    <div class="text-center text-muted small mt-4 pt-3 border-top border-secondary-subtle">
+                        <i class="bi bi-shield-check me-1 text-success"></i> Model trained on 51,987 telemetry samples (2021–2025)
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <footer class="app-footer text-center text-muted my-4 pt-3">
+            Groundwater Level Telemetry Predictor &bull; Flask + XGBoost &bull; Vercel Serverless
+        </footer>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom Application JavaScript -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

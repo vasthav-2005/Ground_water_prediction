@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: gw-prediction-backend
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: ALLOWED_ORIGINS
+        value: "*"

@@ -1,0 +1,22 @@
+{
+  "features": [
+    "Year",
+    "Month",
+    "Day",
+    "Hour",
+    "DayOfYear",
+    "GWL_lag1",
+    "GWL_lag2",
+    "GWL_lag4",
+    "GWL_diff_1",
+    "GWL_roll_mean_24h",
+    "GWL_roll_mean_48h",
+    "GWL_roll_std_24h",
+    "Station_Code"
+  ],
+  "target": "Groundwater Level Telemetry 6 Hourly (meter)",
+  "mae": 0.914,
+  "rmse": 3.7275,
+  "num_samples": 50889,
+  "num_stations": 18
+}
