@@ -1,0 +1,20 @@
+# Exclude non-Python backend and frontend artifacts from Vercel Python Lambda bundle
+backend/
+frontend/
+myvenv/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.png
+*.jpg
+*.csv
+*.zip
+*.ipynb
+.git/
+.mvn/
+.idea/
+.vscode/
+start_app.bat
+start_flask.bat
+README.md
