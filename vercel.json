@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "groundwater_prediction/api/index.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/static/(.*)",
+      "dest": "/groundwater_prediction/static/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/groundwater_prediction/api/index.py"
+    }
+  ]
+}
