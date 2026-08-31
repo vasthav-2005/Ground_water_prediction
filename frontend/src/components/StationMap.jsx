@@ -57,25 +57,27 @@ const StationMap = ({ stations = [], selectedStation, onSelectStation, predictio
       }).addTo(map);
 
       const popupHtml = `
-        <div style="font-family: 'Plus Jakarta Sans', sans-serif; padding: 4px 2px; color: #0f172a; min-width: 160px;">
+        <div style="font-family: 'Plus Jakarta Sans', sans-serif; padding: 4px 2px; color: #0f172a; min-width: 170px;">
           <div style="font-weight: 700; font-size: 0.95rem; color: #0284c7; margin-bottom: 4px;">
-            📍 ${st.name}
+            📍 Station: ${st.name}
           </div>
-          <div style="font-size: 0.78rem; color: #475569; margin-bottom: 2px;">
-            Station Code: <strong>${st.code}</strong>
+          <div style="font-size: 0.8rem; color: #334155; margin-bottom: 2px; font-weight: 600;">
+            Current Observed GWL: <span style="color: #0284c7;">${st.observedGwl !== undefined ? st.observedGwl.toFixed(2) : 'N/A'} m</span>
           </div>
-          <div style="font-size: 0.75rem; color: #64748b;">
-            Lat: ${lat.toFixed(4)}°, Lng: ${lng.toFixed(4)}°
+          <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 4px;">
+            Depth to Water Table &bull; Code: ${st.code}
           </div>
           ${prediction && (prediction.station === st.name || prediction.station_code === st.code) ? `
             <div style="margin-top: 6px; padding: 4px 6px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 4px; font-size: 0.75rem; color: #166534; font-weight: 600;">
-              GWL: ${prediction.predicted_gwl_meter?.toFixed(2)} m (${prediction.classification})
+              Predicted GWL: ${prediction.predicted_gwl_meter?.toFixed(2)} m<br>
+              <span style="font-weight: 500; font-size: 0.7rem;">${prediction.classification}</span>
             </div>
           ` : ''}
         </div>
       `;
 
       circleMarker.bindPopup(popupHtml);
+      circleMarker.bindTooltip(popupHtml, { sticky: true });
 
       circleMarker.on('click', () => {
         if (onSelectStation) {
