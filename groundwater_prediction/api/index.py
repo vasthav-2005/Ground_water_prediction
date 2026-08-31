@@ -2,7 +2,7 @@ import os
 import sys
 import json
 import re
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_file, send_from_directory
 
 # Compute base directories
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -123,15 +123,24 @@ def predict_lightweight(row_dict):
 def home():
     return render_template('index.html', stations=STATION_LIST)
 
-@app.route('/static/water_wells_map.html')
-@app.route('/water_wells_map.html')
 @app.route('/water_wells_map')
+@app.route('/water_wells_map.html')
+@app.route('/static/water_wells_map.html')
 def serve_water_wells_map():
-    map_path = os.path.join(STATIC_DIR, 'water_wells_map.html')
-    if os.path.exists(map_path):
-        with open(map_path, 'r', encoding='utf-8') as f:
-            return f.read(), 200, {'Content-Type': 'text/html; charset=utf-8'}
+    candidates = [
+        os.path.join(STATIC_DIR, 'water_wells_map.html'),
+        os.path.join(TEMPLATES_DIR, 'water_wells_map.html'),
+        os.path.join(BASE_DIR, 'water_wells_map.html'),
+        os.path.join(BASE_DIR, '..', 'water_wells_map.html')
+    ]
+    for candidate in candidates:
+        if os.path.exists(candidate):
+            return send_file(candidate, mimetype='text/html')
     return "Map file not found", 404
+
+@app.route('/static/<path:filename>')
+def custom_static(filename):
+    return send_from_directory(STATIC_DIR, filename)
 
 @app.route('/api/stations', methods=['GET'])
 def get_stations():
