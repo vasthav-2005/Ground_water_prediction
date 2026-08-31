@@ -123,6 +123,7 @@ def predict_lightweight(row_dict):
 def home():
     return render_template('index.html', stations=STATION_LIST)
 
+@app.route('/static/water_wells_map.html')
 @app.route('/water_wells_map.html')
 @app.route('/water_wells_map')
 def serve_water_wells_map():
@@ -145,8 +146,10 @@ def health():
         'stations_count': len(STATION_LIST)
     })
 
-@app.route('/predict', methods=['POST'])
+@app.route('/predict', methods=['GET', 'POST'])
 def predict():
+    if request.method == 'GET':
+        return render_template('index.html', stations=STATION_LIST)
     try:
         if request.is_json:
             data = request.get_json()
