@@ -1,6 +1,6 @@
 import json
 
-notebook_path = r"D:\GW Prediction\predict.ipynb"
+notebook_path = "predict.ipynb"
 with open(notebook_path, 'r', encoding='utf-8') as f:
     nb = json.load(f)
 
@@ -37,7 +37,7 @@ folium_source = [
     "            icon=folium.Icon(color='blue', icon='tint')\n",
     "        ).add_to(m)\n",
     "        \n",
-    "    map_path = r\"D:\\GW Prediction\\water_wells_map.html\"\n",
+    "    map_path = \"water_wells_map.html\"\n",
     "    m.save(map_path)\n",
     "    print(f\"Interactive map saved to: {map_path}\")\n",
     "    \n",

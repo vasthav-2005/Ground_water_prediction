@@ -1,8 +1,9 @@
-import React, { useEffect, useRef } from 'react';
-import { MapPin, Compass, Eye } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { MapPin, Compass, Eye, Layers } from 'lucide-react';
 import { DEFAULT_STATIONS } from '../services/api';
 
 const StationMap = ({ stations = [], selectedStation, onSelectStation, prediction }) => {
+  const [mapMode, setMapMode] = useState('folium'); // 'folium' | 'leaflet'
   const mapContainerRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const markersRef = useRef({});
@@ -10,12 +11,13 @@ const StationMap = ({ stations = [], selectedStation, onSelectStation, predictio
   const stationList = stations && stations.length > 0 ? stations : DEFAULT_STATIONS;
 
   useEffect(() => {
+    if (mapMode !== 'leaflet') return;
     if (!mapContainerRef.current) return;
     if (typeof window === 'undefined' || !window.L) return;
 
     const L = window.L;
 
-    // Initialize map if not already created
+    // Initialize Leaflet map if not created
     if (!mapInstanceRef.current) {
       const map = L.map(mapContainerRef.current, {
         center: [25.55, 91.30],
@@ -24,7 +26,6 @@ const StationMap = ({ stations = [], selectedStation, onSelectStation, predictio
         scrollWheelZoom: true,
       });
 
-      // Dark / modern tile layer using CartoDB Dark Matter or OpenStreetMap
       L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>',
         subdomains: 'abcd',
@@ -36,17 +37,16 @@ const StationMap = ({ stations = [], selectedStation, onSelectStation, predictio
 
     const map = mapInstanceRef.current;
 
-    // Clear existing markers
+    // Clear markers
     Object.values(markersRef.current).forEach(marker => map.removeLayer(marker));
     markersRef.current = {};
 
-    // Add markers for all stations
+    // Add markers
     stationList.forEach(st => {
       const lat = st.lat || 25.55;
       const lng = st.lng || 91.30;
       const isSelected = selectedStation && (selectedStation === st.name || selectedStation === String(st.code));
 
-      // Create glowing circle marker
       const circleMarker = L.circleMarker([lat, lng], {
         radius: isSelected ? 12 : 8,
         fillColor: isSelected ? '#38bdf8' : '#0284c7',
@@ -56,7 +56,6 @@ const StationMap = ({ stations = [], selectedStation, onSelectStation, predictio
         fillOpacity: isSelected ? 0.9 : 0.75,
       }).addTo(map);
 
-      // Popup Content
       const popupHtml = `
         <div style="font-family: 'Plus Jakarta Sans', sans-serif; padding: 4px 2px; color: #0f172a; min-width: 160px;">
           <div style="font-weight: 700; font-size: 0.95rem; color: #0284c7; margin-bottom: 4px;">
@@ -88,17 +87,11 @@ const StationMap = ({ stations = [], selectedStation, onSelectStation, predictio
       markersRef.current[st.code] = circleMarker;
     });
 
-    // Auto-fit bounds if no station is explicitly selected
-    if (!selectedStation && stationList.length > 0) {
-      const bounds = L.latLngBounds(stationList.map(s => [s.lat || 25.55, s.lng || 91.30]));
-      map.fitBounds(bounds, { padding: [30, 30] });
-    }
+  }, [mapMode, stationList, prediction]);
 
-  }, [stationList, prediction]);
-
-  // Pan to selected station when changed
+  // Pan to selected station in leaflet mode
   useEffect(() => {
-    if (!mapInstanceRef.current || !selectedStation) return;
+    if (mapMode !== 'leaflet' || !mapInstanceRef.current || !selectedStation) return;
     const map = mapInstanceRef.current;
 
     const st = stationList.find(s => s.name === selectedStation || String(s.code) === String(selectedStation));
@@ -109,14 +102,15 @@ const StationMap = ({ stations = [], selectedStation, onSelectStation, predictio
         marker.openPopup();
       }
     }
-  }, [selectedStation, stationList]);
+  }, [selectedStation, stationList, mapMode]);
 
   const handleResetView = () => {
-    if (!mapInstanceRef.current || stationList.length === 0) return;
-    const L = window.L;
-    if (!L) return;
-    const bounds = L.latLngBounds(stationList.map(s => [s.lat || 25.55, s.lng || 91.30]));
-    mapInstanceRef.current.fitBounds(bounds, { padding: [30, 30] });
+    if (mapMode === 'leaflet' && mapInstanceRef.current && stationList.length > 0) {
+      const L = window.L;
+      if (!L) return;
+      const bounds = L.latLngBounds(stationList.map(s => [s.lat || 25.55, s.lng || 91.30]));
+      mapInstanceRef.current.fitBounds(bounds, { padding: [30, 30] });
+    }
   };
 
   return (
@@ -127,59 +121,125 @@ const StationMap = ({ stations = [], selectedStation, onSelectStation, predictio
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginBottom: '0.85rem'
+        marginBottom: '0.85rem',
+        flexWrap: 'wrap',
+        gap: '0.5rem'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <MapPin size={18} className="text-primary" />
           <h3 style={{ fontSize: '1.05rem', fontWeight: 700, margin: 0, color: 'var(--text-main)' }}>
-            Meghalaya Hydrological Telemetry Map
+            Interactive Meghalaya Telemetry Map
           </h3>
         </div>
+
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <span style={{
-            fontSize: '0.75rem',
-            padding: '0.2rem 0.6rem',
-            background: 'rgba(56, 189, 248, 0.1)',
-            border: '1px solid rgba(56, 189, 248, 0.3)',
-            borderRadius: '12px',
-            color: 'var(--color-primary)',
-            fontWeight: 600
+          {/* Mode Switcher Buttons */}
+          <div style={{
+            display: 'flex',
+            background: 'rgba(15, 23, 42, 0.6)',
+            borderRadius: 'var(--radius-sm)',
+            border: '1px solid var(--border-color)',
+            padding: '2px'
           }}>
-            18 Telemetry Stations
-          </span>
-          <button
-            onClick={handleResetView}
-            style={{
-              background: 'rgba(255, 255, 255, 0.05)',
-              border: '1px solid var(--border-color)',
-              borderRadius: 'var(--radius-sm)',
-              color: 'var(--text-muted)',
-              cursor: 'pointer',
-              padding: '0.3rem 0.6rem',
-              fontSize: '0.75rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px'
-            }}
-            title="Reset Map View"
-          >
-            <Compass size={12} /> Reset View
-          </button>
+            <button
+              type="button"
+              onClick={() => setMapMode('folium')}
+              style={{
+                background: mapMode === 'folium' ? 'var(--color-primary)' : 'transparent',
+                color: mapMode === 'folium' ? '#ffffff' : 'var(--text-muted)',
+                border: 'none',
+                borderRadius: '4px',
+                padding: '0.25rem 0.65rem',
+                fontSize: '0.75rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px'
+              }}
+            >
+              <Layers size={12} /> Folium Map
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setMapMode('leaflet')}
+              style={{
+                background: mapMode === 'leaflet' ? 'var(--color-primary)' : 'transparent',
+                color: mapMode === 'leaflet' ? '#ffffff' : 'var(--text-muted)',
+                border: 'none',
+                borderRadius: '4px',
+                padding: '0.25rem 0.65rem',
+                fontSize: '0.75rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px'
+              }}
+            >
+              <Compass size={12} /> Station Explorer
+            </button>
+          </div>
+
+          {mapMode === 'leaflet' && (
+            <button
+              onClick={handleResetView}
+              style={{
+                background: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid var(--border-color)',
+                borderRadius: 'var(--radius-sm)',
+                color: 'var(--text-muted)',
+                cursor: 'pointer',
+                padding: '0.3rem 0.6rem',
+                fontSize: '0.75rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px'
+              }}
+              title="Reset Map View"
+            >
+              <Compass size={12} /> Reset View
+            </button>
+          )}
         </div>
       </div>
 
-      {/* Map Container */}
-      <div
-        ref={mapContainerRef}
-        style={{
+      {/* Map View Area */}
+      {mapMode === 'folium' ? (
+        <div style={{
           width: '100%',
-          height: '340px',
+          height: '420px',
           borderRadius: 'var(--radius-md)',
           overflow: 'hidden',
           border: '1px solid var(--border-color)',
-          zIndex: 1
-        }}
-      />
+          background: '#0f172a'
+        }}>
+          <iframe
+            src="/water_wells_map.html"
+            title="Interactive Meghalaya Folium Water Wells Map"
+            style={{
+              width: '100%',
+              height: '100%',
+              border: 'none'
+            }}
+          />
+        </div>
+      ) : (
+        <div
+          ref={mapContainerRef}
+          style={{
+            width: '100%',
+            height: '420px',
+            borderRadius: 'var(--radius-md)',
+            overflow: 'hidden',
+            border: '1px solid var(--border-color)',
+            zIndex: 1
+          }}
+        />
+      )}
 
       <div style={{
         marginTop: '0.65rem',
@@ -189,8 +249,8 @@ const StationMap = ({ stations = [], selectedStation, onSelectStation, predictio
         alignItems: 'center',
         justifyContent: 'space-between'
       }}>
-        <span><Eye size={12} style={{ display: 'inline', marginRight: '4px' }} /> Click any marker to auto-select station</span>
-        <span>Interactive OpenStreetMap</span>
+        <span><Eye size={12} style={{ display: 'inline', marginRight: '4px' }} /> Interactive Folium district map generated from hydrological telemetry data</span>
+        <span>Vercel Compatible</span>
       </div>
 
     </div>

@@ -1,6 +1,6 @@
 import json
 
-notebook_path = r"D:\GW Prediction\predict.ipynb"
+notebook_path = "predict.ipynb"
 with open(notebook_path, 'r', encoding='utf-8') as f:
     nb = json.load(f)
 
