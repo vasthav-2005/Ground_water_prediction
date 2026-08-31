@@ -22,23 +22,21 @@ export const getRollingMonths = () => {
 
   const rolling = [];
 
-  for (let offset = 0; offset < 4; offset++) {
+  for (let offset = 0; offset < 12; offset++) {
     const totalMonthIdx = currentMonthIdx + offset;
     const actualMonthNumber = (totalMonthIdx % 12) + 1; // 1..12
     const targetYear = currentYear + Math.floor(totalMonthIdx / 12);
     const monthName = MONTH_NAMES[actualMonthNumber - 1];
 
-    let suffix = `Month ${offset + 1}`;
-    if (offset === 0) suffix += ' – Current Month';
-    else if (offset === 1) suffix += ' – Next Month';
+    const label = `${monthName} (Month ${offset + 1})`;
 
     rolling.push({
       relativeIndex: offset + 1,
       actualMonth: actualMonthNumber,
       year: targetYear,
       monthName: monthName,
-      label: `${monthName} (${suffix})`,
-      shortLabel: `${monthName} (Month ${offset + 1})`
+      label: label,
+      shortLabel: label
     });
   }
 

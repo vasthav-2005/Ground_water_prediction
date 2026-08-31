@@ -72,22 +72,18 @@ function getISTRollingMonths() {
   const currentMonthIdx = istDate.getMonth(); // 0..11
 
   const rolling = [];
-  for (let offset = 0; offset < 4; offset++) {
+  for (let offset = 0; offset < 12; offset++) {
     const totalIdx = currentMonthIdx + offset;
     const actualMonthNum = (totalIdx % 12) + 1; // 1..12
     const targetYear = currentYear + Math.floor(totalIdx / 12);
     const monthName = ALL_MONTH_NAMES[actualMonthNum - 1];
-
-    let suffix = `Month ${offset + 1}`;
-    if (offset === 0) suffix += ' – Current Month';
-    else if (offset === 1) suffix += ' – Next Month';
 
     rolling.push({
       relativeIndex: offset + 1,
       actualMonth: actualMonthNum,
       year: targetYear,
       monthName: monthName,
-      label: `${monthName} (${suffix})`
+      label: `${monthName} (Month ${offset + 1})`
     });
   }
   return rolling;

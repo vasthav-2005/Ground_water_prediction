@@ -133,24 +133,20 @@ def get_rolling_months_ist():
     ]
 
     rolling = []
-    for offset in range(4):
+    for offset in range(12):
         total_idx = current_month_idx + offset
         actual_month = (total_idx % 12) + 1
         year = current_year + (total_idx // 12)
         month_name = month_names[actual_month - 1]
 
-        suffix = f"Month {offset + 1}"
-        if offset == 0:
-            suffix += " – Current Month"
-        elif offset == 1:
-            suffix += " – Next Month"
+        label = f"{month_name} (Month {offset + 1})"
 
         rolling.append({
             'relative_index': offset + 1,
             'actual_month': actual_month,
             'year': year,
             'month_name': month_name,
-            'label': f"{month_name} ({suffix})",
+            'label': label,
             'is_default': (offset == 0)
         })
 
@@ -219,7 +215,7 @@ def predict():
         rel_month = data.get('relative_month') or data.get('relativeMonth')
         month_raw = data.get('month')
 
-        if rel_month is not None and str(rel_month).strip() in ['1', '2', '3', '4']:
+        if rel_month is not None and str(rel_month).strip() in [str(i) for i in range(1, 13)]:
             rel_idx = int(rel_month) - 1
             total_idx = (now_ist.month - 1) + rel_idx
             month = (total_idx % 12) + 1
