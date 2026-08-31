@@ -15,6 +15,10 @@
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     
+    <!-- Leaflet CSS & JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
     <!-- Custom Stylesheet -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
@@ -205,6 +209,21 @@
                 </div>
             </div>
 
+        </div>
+
+        <!-- Telemetry Station Map -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="glass-card p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3 class="h5 m-0 text-white">
+                            <i class="bi bi-geo-alt-fill text-primary me-2"></i> Meghalaya Telemetry Station Map
+                        </h3>
+                        <span class="badge bg-primary-subtle text-primary">18 Telemetry Stations</span>
+                    </div>
+                    <div id="flaskMap" style="height: 360px; border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);"></div>
+                </div>
+            </div>
         </div>
 
         <footer class="app-footer text-center text-muted my-4 pt-3">

@@ -57,6 +57,80 @@ document.addEventListener('DOMContentLoaded', () => {
         updatePredictionResultUI(result);
       }
 
+const STATIONS_COORDS = [
+  { name: 'Amlarem', code: 0, lat: 25.285278, lng: 92.103056 },
+  { name: 'Barengapara', code: 1, lat: 25.201033, lng: 90.310283 },
+  { name: 'Byrnihat', code: 2, lat: 26.077500, lng: 91.875556 },
+  { name: 'Damas_1', code: 3, lat: 25.938192, lng: 90.727392 },
+  { name: 'Jowai', code: 4, lat: 25.436389, lng: 92.193889 },
+  { name: 'Khliehriat', code: 5, lat: 25.344722, lng: 92.366111 },
+  { name: 'Latyrke', code: 6, lat: 25.343333, lng: 92.458611 },
+  { name: 'Mairang', code: 7, lat: 25.558600, lng: 91.625750 },
+  { name: 'Mawkyrwat_1', code: 8, lat: 25.371642, lng: 91.481808 },
+  { name: 'Nongstoin_1', code: 9, lat: 25.544931, lng: 91.238681 },
+  { name: 'Panchiring', code: 10, lat: 25.202250, lng: 91.318917 },
+  { name: 'Phulbari_1', code: 11, lat: 25.877194, lng: 90.029719 },
+  { name: 'Rongjeng_1', code: 12, lat: 25.610172, lng: 90.731239 },
+  { name: 'Saiden', code: 13, lat: 25.884444, lng: 91.882222 },
+  { name: 'Shillong', code: 14, lat: 25.582778, lng: 91.886944 },
+  { name: 'Soksan', code: 15, lat: 25.898100, lng: 90.642533 },
+  { name: 'Williamnagar', code: 16, lat: 25.508500, lng: 90.604389 },
+  { name: 'Zikzak_1', code: 17, lat: 25.376111, lng: 89.885556 }
+];
+
+let flaskMapInstance = null;
+let flaskMarkers = {};
+
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('predictionForm');
+  const stationSelect = document.getElementById('station');
+  const stationCodeInput = document.getElementById('stationCode');
+
+  // Initialize Flask Leaflet Map
+  initFlaskMap();
+
+  // Sync Station Code hidden input & map focus
+  stationSelect.addEventListener('change', () => {
+    const selectedOption = stationSelect.options[stationSelect.selectedIndex];
+    const code = selectedOption.getAttribute('data-code') || '0';
+    stationCodeInput.value = code;
+    focusStationOnMap(selectedOption.value);
+  });
+
+  // Form submit AJAX listener
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    hideError();
+
+    const submitBtn = document.getElementById('btnSubmit');
+    const originalBtnText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Predicting...';
+    submitBtn.disabled = true;
+
+    try {
+      const formData = new FormData(form);
+      const payload = {};
+      formData.forEach((value, key) => {
+        payload[key] = value;
+      });
+
+      const response = await fetch('/predict', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || result.status === 'error') {
+        showError(result.message || 'Error occurred during prediction computation.');
+      } else {
+        updatePredictionResultUI(result);
+      }
+
     } catch (err) {
       showError('Network error connecting to Flask prediction engine: ' + err.message);
     } finally {
@@ -65,6 +139,64 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+function initFlaskMap() {
+  const mapEl = document.getElementById('flaskMap');
+  if (!mapEl || typeof L === 'undefined') return;
+
+  flaskMapInstance = L.map('flaskMap', {
+    center: [25.55, 91.30],
+    zoom: 8
+  });
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+    subdomains: 'abcd',
+    maxZoom: 19
+  }).addTo(flaskMapInstance);
+
+  STATIONS_COORDS.forEach(st => {
+    const marker = L.circleMarker([st.lat, st.lng], {
+      radius: 9,
+      fillColor: '#0284c7',
+      color: '#ffffff',
+      weight: 2,
+      opacity: 1,
+      fillOpacity: 0.8
+    }).addTo(flaskMapInstance);
+
+    marker.bindPopup(`
+      <div style="font-family: sans-serif; padding: 2px;">
+        <strong style="color:#0284c7;">📍 ${st.name}</strong><br>
+        <span style="font-size:0.8rem; color:#475569;">Station Code: ${st.code}</span>
+      </div>
+    `);
+
+    marker.on('click', () => {
+      const stationSelect = document.getElementById('station');
+      for (let i = 0; i < stationSelect.options.length; i++) {
+        if (stationSelect.options[i].value === st.name) {
+          stationSelect.selectedIndex = i;
+          document.getElementById('stationCode').value = st.code;
+          break;
+        }
+      }
+    });
+
+    flaskMarkers[st.name] = marker;
+  });
+}
+
+function focusStationOnMap(stationName) {
+  if (!flaskMapInstance) return;
+  const st = STATIONS_COORDS.find(s => s.name === stationName);
+  if (st) {
+    flaskMapInstance.flyTo([st.lat, st.lng], 11);
+    if (flaskMarkers[st.name]) {
+      flaskMarkers[st.name].openPopup();
+    }
+  }
+}
 
 // Load Preset Scenario
 function loadPreset(presetKey) {
@@ -81,6 +213,7 @@ function loadPreset(presetKey) {
 
   document.getElementById('stationCode').value = p.stationCode;
   document.getElementById('month').value = p.month;
+  focusStationOnMap(p.station);
   hideError();
 }
 
@@ -88,6 +221,7 @@ function loadPreset(presetKey) {
 function resetForm() {
   document.getElementById('predictionForm').reset();
   document.getElementById('stationCode').value = '14';
+  focusStationOnMap('Shillong');
   hideError();
 }
 
@@ -108,6 +242,10 @@ function updatePredictionResultUI(res) {
     document.getElementById('resStation').innerText = res.station;
     const mName = MONTH_NAMES[inp.Month] || `Month ${inp.Month}`;
     document.getElementById('resMonth').innerText = mName;
+  }
+
+  if (res.station) {
+    focusStationOnMap(res.station);
   }
 }
 

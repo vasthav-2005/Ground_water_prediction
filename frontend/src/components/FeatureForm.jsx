@@ -4,23 +4,37 @@ import SamplePresets from './SamplePresets';
 import { MONTHS } from '../utils/samplePresets';
 import { validatePredictionForm } from '../utils/validators';
 
-const FeatureForm = ({ stations, onSubmit, isLoading }) => {
+const FeatureForm = ({ stations, selectedStation, onStationChange, onSubmit, isLoading }) => {
   const [formData, setFormData] = useState({
-    station: 'Shillong',
+    station: selectedStation || 'Shillong',
     stationCode: 14,
     month: 6
   });
 
   const [errors, setErrors] = useState({});
 
+  // Sync internal state when external selectedStation changes (e.g. clicked on map)
+  React.useEffect(() => {
+    if (selectedStation && selectedStation !== formData.station) {
+      const matched = stations.find(s => s.name === selectedStation || String(s.code) === String(selectedStation));
+      setFormData(prev => ({
+        ...prev,
+        station: matched ? matched.name : selectedStation,
+        stationCode: matched ? matched.code : prev.stationCode
+      }));
+    }
+  }, [selectedStation, stations]);
+
   const handleStationChange = (e) => {
     const selectedName = e.target.value;
     const matched = stations.find(s => s.name === selectedName);
+    const newCode = matched ? matched.code : 0;
     setFormData(prev => ({
       ...prev,
       station: selectedName,
-      stationCode: matched ? matched.code : 0
+      stationCode: newCode
     }));
+    if (onStationChange) onStationChange(selectedName);
     if (errors.station) setErrors(prev => ({ ...prev, station: null }));
   };
 
@@ -39,15 +53,19 @@ const FeatureForm = ({ stations, onSubmit, isLoading }) => {
       stationCode: preset.stationCode,
       month: preset.month
     });
+    if (onStationChange) onStationChange(preset.station);
     setErrors({});
   };
 
   const handleReset = () => {
+    const defaultSt = stations[0]?.name || 'Amlarem';
+    const defaultCode = stations[0]?.code || 0;
     setFormData({
-      station: stations[0]?.name || 'Amlarem',
-      stationCode: stations[0]?.code || 0,
+      station: defaultSt,
+      stationCode: defaultCode,
       month: 1
     });
+    if (onStationChange) onStationChange(defaultSt);
     setErrors({});
   };
 
