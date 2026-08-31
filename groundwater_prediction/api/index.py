@@ -123,6 +123,15 @@ def predict_lightweight(row_dict):
 def home():
     return render_template('index.html', stations=STATION_LIST)
 
+@app.route('/water_wells_map.html')
+@app.route('/water_wells_map')
+def serve_water_wells_map():
+    map_path = os.path.join(STATIC_DIR, 'water_wells_map.html')
+    if os.path.exists(map_path):
+        with open(map_path, 'r', encoding='utf-8') as f:
+            return f.read(), 200, {'Content-Type': 'text/html; charset=utf-8'}
+    return "Map file not found", 404
+
 @app.route('/api/stations', methods=['GET'])
 def get_stations():
     return jsonify({'status': 'success', 'stations': STATION_LIST})
