@@ -17,7 +17,7 @@
             <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
-                #map_5735172c03b68ef63fc426fb80c1985d {
+                #map_69580e31a9a00b5e46374a9dd7fad476 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -53,16 +53,16 @@
 </head>
 <body>
     
-    <h3 align="center" style="font-family: Arial, sans-serif; margin-top: 10px; color: #0f172a;">Water Well Locations & Observed Groundwater Levels (Meghalaya)</h3>
+    <h3 align="center" style="font-family: Arial, sans-serif; margin-top: 10px; color: #0f172a;">Meghalaya Water Well Locations & Latest Observed Groundwater Levels</h3>
     
-            <div class="folium-map" id="map_5735172c03b68ef63fc426fb80c1985d" ></div>
+            <div class="folium-map" id="map_69580e31a9a00b5e46374a9dd7fad476" ></div>
         
 </body>
 <script>
     
     
-            var map_5735172c03b68ef63fc426fb80c1985d = L.map(
-                "map_5735172c03b68ef63fc426fb80c1985d",
+            var map_69580e31a9a00b5e46374a9dd7fad476 = L.map(
+                "map_69580e31a9a00b5e46374a9dd7fad476",
                 {
                     center: [25.557842746666672, 91.29792530888889],
                     crs: L.CRS.EPSG3857,
@@ -79,7 +79,7 @@
 
         
     
-            var tile_layer_46bb5478656b4b549bc4673249a37f18 = L.tileLayer(
+            var tile_layer_4a65795aea78135014deb5d5b89f33ce = L.tileLayer(
                 "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
                 {
   "minZoom": 0,
@@ -96,44 +96,46 @@
             );
         
     
-            tile_layer_46bb5478656b4b549bc4673249a37f18.addTo(map_5735172c03b68ef63fc426fb80c1985d);
+            tile_layer_4a65795aea78135014deb5d5b89f33ce.addTo(map_69580e31a9a00b5e46374a9dd7fad476);
         
     
-            var circle_marker_919725ee5d9977b1df38a39c64d61155 = L.circleMarker(
+            var circle_marker_62b63a5165ec8a9a4967256fe46a5dd7 = L.circleMarker(
                 [25.28527778, 92.10305556],
                 {"bubblingMouseEvents": true, "color": "#0f172a", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0284c7", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 1.5}
-            ).addTo(map_5735172c03b68ef63fc426fb80c1985d);
+            ).addTo(map_69580e31a9a00b5e46374a9dd7fad476);
         
     
-        var popup_d9d87e7e77b23254c2559a375bbd3db5 = L.popup({
-  "maxWidth": 250,
+        var popup_319533f06c26e48fc463e72e6cd04a00 = L.popup({
+  "maxWidth": 260,
 });
 
         
             
-                var html_2c64c4e65fc1174ded7dc0d3705f094d = $(`<div id="html_2c64c4e65fc1174ded7dc0d3705f094d" style="width: 100.0%; height: 100.0%;">     <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">             Station: Amlarem         </div>         <div style="font-weight: 600;">             Current Groundwater Level: <span style="color: #0284c7;">47.27 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 1px;">             Depth to Water Table (21-May-2025)         </div>     </div>     </div>`)[0];
-                popup_d9d87e7e77b23254c2559a375bbd3db5.setContent(html_2c64c4e65fc1174ded7dc0d3705f094d);
+                var html_fc2f29d3764d46d53703f2a5ae706637 = $(`<div id="html_fc2f29d3764d46d53703f2a5ae706637" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">             Station: Amlarem         </div>         <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">             Latest Available Groundwater Level:<br>             <span style="color: #0284c7; font-size: 14px; font-weight: 700;">47.27 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">             <b>Depth to Water Table</b><br>             Last Updated: 2025-05-21 18:00         </div>     </div>     </div>`)[0];
+                popup_319533f06c26e48fc463e72e6cd04a00.setContent(html_fc2f29d3764d46d53703f2a5ae706637);
             
         
 
-        circle_marker_919725ee5d9977b1df38a39c64d61155.bindPopup(popup_d9d87e7e77b23254c2559a375bbd3db5)
+        circle_marker_62b63a5165ec8a9a4967256fe46a5dd7.bindPopup(popup_319533f06c26e48fc463e72e6cd04a00)
         ;
 
         
     
     
-            circle_marker_919725ee5d9977b1df38a39c64d61155.bindTooltip(
+            circle_marker_62b63a5165ec8a9a4967256fe46a5dd7.bindTooltip(
                 `<div>
                      
-    <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">
-        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">
+    <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">
+        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">
             Station: Amlarem
         </div>
-        <div style="font-weight: 600;">
-            Current Groundwater Level: <span style="color: #0284c7;">47.27 m</span>
+        <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">
+            Latest Available Groundwater Level:<br>
+            <span style="color: #0284c7; font-size: 14px; font-weight: 700;">47.27 m</span>
         </div>
-        <div style="font-size: 11px; color: #64748b; margin-top: 1px;">
-            Depth to Water Table (21-May-2025)
+        <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">
+            <b>Depth to Water Table</b><br>
+            Last Updated: 2025-05-21 18:00
         </div>
     </div>
     
@@ -144,41 +146,43 @@
             );
         
     
-            var circle_marker_c7d28e7eceabe6717c6c872458c4932b = L.circleMarker(
+            var circle_marker_286ea7e5f326618052b7d9d889964950 = L.circleMarker(
                 [25.20103333, 90.31028333],
                 {"bubblingMouseEvents": true, "color": "#0f172a", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0284c7", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 1.5}
-            ).addTo(map_5735172c03b68ef63fc426fb80c1985d);
+            ).addTo(map_69580e31a9a00b5e46374a9dd7fad476);
         
     
-        var popup_23f305da722a917eb5e6ad27e023cee5 = L.popup({
-  "maxWidth": 250,
+        var popup_8af242e300f31ecf2a6ca429e2889723 = L.popup({
+  "maxWidth": 260,
 });
 
         
             
-                var html_1a79f725094133062fe97729085abb41 = $(`<div id="html_1a79f725094133062fe97729085abb41" style="width: 100.0%; height: 100.0%;">     <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">             Station: Barengapara         </div>         <div style="font-weight: 600;">             Current Groundwater Level: <span style="color: #0284c7;">4.46 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 1px;">             Depth to Water Table (21-May-2025)         </div>     </div>     </div>`)[0];
-                popup_23f305da722a917eb5e6ad27e023cee5.setContent(html_1a79f725094133062fe97729085abb41);
+                var html_b360c7bd3d3d613ca592ad10ac121640 = $(`<div id="html_b360c7bd3d3d613ca592ad10ac121640" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">             Station: Barengapara         </div>         <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">             Latest Available Groundwater Level:<br>             <span style="color: #0284c7; font-size: 14px; font-weight: 700;">4.46 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">             <b>Depth to Water Table</b><br>             Last Updated: 2025-05-21 18:00         </div>     </div>     </div>`)[0];
+                popup_8af242e300f31ecf2a6ca429e2889723.setContent(html_b360c7bd3d3d613ca592ad10ac121640);
             
         
 
-        circle_marker_c7d28e7eceabe6717c6c872458c4932b.bindPopup(popup_23f305da722a917eb5e6ad27e023cee5)
+        circle_marker_286ea7e5f326618052b7d9d889964950.bindPopup(popup_8af242e300f31ecf2a6ca429e2889723)
         ;
 
         
     
     
-            circle_marker_c7d28e7eceabe6717c6c872458c4932b.bindTooltip(
+            circle_marker_286ea7e5f326618052b7d9d889964950.bindTooltip(
                 `<div>
                      
-    <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">
-        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">
+    <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">
+        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">
             Station: Barengapara
         </div>
-        <div style="font-weight: 600;">
-            Current Groundwater Level: <span style="color: #0284c7;">4.46 m</span>
+        <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">
+            Latest Available Groundwater Level:<br>
+            <span style="color: #0284c7; font-size: 14px; font-weight: 700;">4.46 m</span>
         </div>
-        <div style="font-size: 11px; color: #64748b; margin-top: 1px;">
-            Depth to Water Table (21-May-2025)
+        <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">
+            <b>Depth to Water Table</b><br>
+            Last Updated: 2025-05-21 18:00
         </div>
     </div>
     
@@ -189,41 +193,43 @@
             );
         
     
-            var circle_marker_292557b996a34975e490ff196a66de73 = L.circleMarker(
+            var circle_marker_10f87755b3f7a38dfad1c81139e4b7f1 = L.circleMarker(
                 [26.0775, 91.87555556],
                 {"bubblingMouseEvents": true, "color": "#0f172a", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0284c7", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 1.5}
-            ).addTo(map_5735172c03b68ef63fc426fb80c1985d);
+            ).addTo(map_69580e31a9a00b5e46374a9dd7fad476);
         
     
-        var popup_602b76d559c5c90dabff4a608929f25d = L.popup({
-  "maxWidth": 250,
+        var popup_aead4a2bbee8c54e69a20e18df50b4b2 = L.popup({
+  "maxWidth": 260,
 });
 
         
             
-                var html_328896d62410d753b62eae6821b6962b = $(`<div id="html_328896d62410d753b62eae6821b6962b" style="width: 100.0%; height: 100.0%;">     <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">             Station: Byrnihat          </div>         <div style="font-weight: 600;">             Current Groundwater Level: <span style="color: #0284c7;">45.99 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 1px;">             Depth to Water Table (20-May-2025)         </div>     </div>     </div>`)[0];
-                popup_602b76d559c5c90dabff4a608929f25d.setContent(html_328896d62410d753b62eae6821b6962b);
+                var html_c96509d13fefca7acd39fcc314c90efe = $(`<div id="html_c96509d13fefca7acd39fcc314c90efe" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">             Station: Byrnihat          </div>         <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">             Latest Available Groundwater Level:<br>             <span style="color: #0284c7; font-size: 14px; font-weight: 700;">45.99 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">             <b>Depth to Water Table</b><br>             Last Updated: 2025-05-20 12:00         </div>     </div>     </div>`)[0];
+                popup_aead4a2bbee8c54e69a20e18df50b4b2.setContent(html_c96509d13fefca7acd39fcc314c90efe);
             
         
 
-        circle_marker_292557b996a34975e490ff196a66de73.bindPopup(popup_602b76d559c5c90dabff4a608929f25d)
+        circle_marker_10f87755b3f7a38dfad1c81139e4b7f1.bindPopup(popup_aead4a2bbee8c54e69a20e18df50b4b2)
         ;
 
         
     
     
-            circle_marker_292557b996a34975e490ff196a66de73.bindTooltip(
+            circle_marker_10f87755b3f7a38dfad1c81139e4b7f1.bindTooltip(
                 `<div>
                      
-    <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">
-        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">
+    <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">
+        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">
             Station: Byrnihat 
         </div>
-        <div style="font-weight: 600;">
-            Current Groundwater Level: <span style="color: #0284c7;">45.99 m</span>
+        <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">
+            Latest Available Groundwater Level:<br>
+            <span style="color: #0284c7; font-size: 14px; font-weight: 700;">45.99 m</span>
         </div>
-        <div style="font-size: 11px; color: #64748b; margin-top: 1px;">
-            Depth to Water Table (20-May-2025)
+        <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">
+            <b>Depth to Water Table</b><br>
+            Last Updated: 2025-05-20 12:00
         </div>
     </div>
     
@@ -234,41 +240,43 @@
             );
         
     
-            var circle_marker_ff37dd6bee1b3f4be70ce2e2ce00f2b6 = L.circleMarker(
+            var circle_marker_007338c9db926443c2f702a1233f3b4a = L.circleMarker(
                 [25.93819167, 90.72739167],
                 {"bubblingMouseEvents": true, "color": "#0f172a", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0284c7", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 1.5}
-            ).addTo(map_5735172c03b68ef63fc426fb80c1985d);
+            ).addTo(map_69580e31a9a00b5e46374a9dd7fad476);
         
     
-        var popup_a50d2f6a29bed299c090219447f57316 = L.popup({
-  "maxWidth": 250,
+        var popup_84b711c70ecf79eae543abb934169ea8 = L.popup({
+  "maxWidth": 260,
 });
 
         
             
-                var html_53d5a2305722c6896c86c06ddd935f14 = $(`<div id="html_53d5a2305722c6896c86c06ddd935f14" style="width: 100.0%; height: 100.0%;">     <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">             Station: Damas_1         </div>         <div style="font-weight: 600;">             Current Groundwater Level: <span style="color: #0284c7;">4.40 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 1px;">             Depth to Water Table (21-Nov-2024)         </div>     </div>     </div>`)[0];
-                popup_a50d2f6a29bed299c090219447f57316.setContent(html_53d5a2305722c6896c86c06ddd935f14);
+                var html_740cb519048181b29b48b53af2ab2952 = $(`<div id="html_740cb519048181b29b48b53af2ab2952" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">             Station: Damas_1         </div>         <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">             Latest Available Groundwater Level:<br>             <span style="color: #0284c7; font-size: 14px; font-weight: 700;">4.40 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">             <b>Depth to Water Table</b><br>             Last Updated: 2024-11-21 12:00         </div>     </div>     </div>`)[0];
+                popup_84b711c70ecf79eae543abb934169ea8.setContent(html_740cb519048181b29b48b53af2ab2952);
             
         
 
-        circle_marker_ff37dd6bee1b3f4be70ce2e2ce00f2b6.bindPopup(popup_a50d2f6a29bed299c090219447f57316)
+        circle_marker_007338c9db926443c2f702a1233f3b4a.bindPopup(popup_84b711c70ecf79eae543abb934169ea8)
         ;
 
         
     
     
-            circle_marker_ff37dd6bee1b3f4be70ce2e2ce00f2b6.bindTooltip(
+            circle_marker_007338c9db926443c2f702a1233f3b4a.bindTooltip(
                 `<div>
                      
-    <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">
-        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">
+    <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">
+        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">
             Station: Damas_1
         </div>
-        <div style="font-weight: 600;">
-            Current Groundwater Level: <span style="color: #0284c7;">4.40 m</span>
+        <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">
+            Latest Available Groundwater Level:<br>
+            <span style="color: #0284c7; font-size: 14px; font-weight: 700;">4.40 m</span>
         </div>
-        <div style="font-size: 11px; color: #64748b; margin-top: 1px;">
-            Depth to Water Table (21-Nov-2024)
+        <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">
+            <b>Depth to Water Table</b><br>
+            Last Updated: 2024-11-21 12:00
         </div>
     </div>
     
@@ -279,41 +287,43 @@
             );
         
     
-            var circle_marker_8c1baa018393bc6514e7f21070cb0f56 = L.circleMarker(
+            var circle_marker_3919ea36d2bb5831f07a9b15b1d98a1f = L.circleMarker(
                 [25.43638889, 92.19388889],
                 {"bubblingMouseEvents": true, "color": "#0f172a", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0284c7", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 1.5}
-            ).addTo(map_5735172c03b68ef63fc426fb80c1985d);
+            ).addTo(map_69580e31a9a00b5e46374a9dd7fad476);
         
     
-        var popup_d489ac886b795992da2611f8942701e9 = L.popup({
-  "maxWidth": 250,
+        var popup_1f288352237b1a213dd7bcc2b113983a = L.popup({
+  "maxWidth": 260,
 });
 
         
             
-                var html_6a203fcf5537b94313ab696394d3858b = $(`<div id="html_6a203fcf5537b94313ab696394d3858b" style="width: 100.0%; height: 100.0%;">     <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">             Station: Jowai          </div>         <div style="font-weight: 600;">             Current Groundwater Level: <span style="color: #0284c7;">6.61 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 1px;">             Depth to Water Table (22-May-2025)         </div>     </div>     </div>`)[0];
-                popup_d489ac886b795992da2611f8942701e9.setContent(html_6a203fcf5537b94313ab696394d3858b);
+                var html_8264bcd11a8bc3e0eb6db75574834577 = $(`<div id="html_8264bcd11a8bc3e0eb6db75574834577" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">             Station: Jowai          </div>         <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">             Latest Available Groundwater Level:<br>             <span style="color: #0284c7; font-size: 14px; font-weight: 700;">6.61 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">             <b>Depth to Water Table</b><br>             Last Updated: 2025-05-22 06:00         </div>     </div>     </div>`)[0];
+                popup_1f288352237b1a213dd7bcc2b113983a.setContent(html_8264bcd11a8bc3e0eb6db75574834577);
             
         
 
-        circle_marker_8c1baa018393bc6514e7f21070cb0f56.bindPopup(popup_d489ac886b795992da2611f8942701e9)
+        circle_marker_3919ea36d2bb5831f07a9b15b1d98a1f.bindPopup(popup_1f288352237b1a213dd7bcc2b113983a)
         ;
 
         
     
     
-            circle_marker_8c1baa018393bc6514e7f21070cb0f56.bindTooltip(
+            circle_marker_3919ea36d2bb5831f07a9b15b1d98a1f.bindTooltip(
                 `<div>
                      
-    <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">
-        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">
+    <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">
+        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">
             Station: Jowai 
         </div>
-        <div style="font-weight: 600;">
-            Current Groundwater Level: <span style="color: #0284c7;">6.61 m</span>
+        <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">
+            Latest Available Groundwater Level:<br>
+            <span style="color: #0284c7; font-size: 14px; font-weight: 700;">6.61 m</span>
         </div>
-        <div style="font-size: 11px; color: #64748b; margin-top: 1px;">
-            Depth to Water Table (22-May-2025)
+        <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">
+            <b>Depth to Water Table</b><br>
+            Last Updated: 2025-05-22 06:00
         </div>
     </div>
     
@@ -324,41 +334,43 @@
             );
         
     
-            var circle_marker_84e95aef6aeaf46f48785c35f34a05b4 = L.circleMarker(
+            var circle_marker_3baa06b0664003ccd11cb7ec6dd9de84 = L.circleMarker(
                 [25.34472222, 92.36611111],
                 {"bubblingMouseEvents": true, "color": "#0f172a", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0284c7", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 1.5}
-            ).addTo(map_5735172c03b68ef63fc426fb80c1985d);
+            ).addTo(map_69580e31a9a00b5e46374a9dd7fad476);
         
     
-        var popup_6266ea782eabbdd8860b8f9e456fb3f5 = L.popup({
-  "maxWidth": 250,
+        var popup_ad890e33878623d7cf2ccf7a6a3f9f7d = L.popup({
+  "maxWidth": 260,
 });
 
         
             
-                var html_3751c0864f7890992d9632b38c5b0e12 = $(`<div id="html_3751c0864f7890992d9632b38c5b0e12" style="width: 100.0%; height: 100.0%;">     <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">             Station: Khliehriat         </div>         <div style="font-weight: 600;">             Current Groundwater Level: <span style="color: #0284c7;">23.33 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 1px;">             Depth to Water Table (21-May-2025)         </div>     </div>     </div>`)[0];
-                popup_6266ea782eabbdd8860b8f9e456fb3f5.setContent(html_3751c0864f7890992d9632b38c5b0e12);
+                var html_2066d8cc0dcce4e0bcbd4da67e6174c4 = $(`<div id="html_2066d8cc0dcce4e0bcbd4da67e6174c4" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">             Station: Khliehriat         </div>         <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">             Latest Available Groundwater Level:<br>             <span style="color: #0284c7; font-size: 14px; font-weight: 700;">23.33 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">             <b>Depth to Water Table</b><br>             Last Updated: 2025-05-21 18:00         </div>     </div>     </div>`)[0];
+                popup_ad890e33878623d7cf2ccf7a6a3f9f7d.setContent(html_2066d8cc0dcce4e0bcbd4da67e6174c4);
             
         
 
-        circle_marker_84e95aef6aeaf46f48785c35f34a05b4.bindPopup(popup_6266ea782eabbdd8860b8f9e456fb3f5)
+        circle_marker_3baa06b0664003ccd11cb7ec6dd9de84.bindPopup(popup_ad890e33878623d7cf2ccf7a6a3f9f7d)
         ;
 
         
     
     
-            circle_marker_84e95aef6aeaf46f48785c35f34a05b4.bindTooltip(
+            circle_marker_3baa06b0664003ccd11cb7ec6dd9de84.bindTooltip(
                 `<div>
                      
-    <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">
-        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">
+    <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">
+        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">
             Station: Khliehriat
         </div>
-        <div style="font-weight: 600;">
-            Current Groundwater Level: <span style="color: #0284c7;">23.33 m</span>
+        <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">
+            Latest Available Groundwater Level:<br>
+            <span style="color: #0284c7; font-size: 14px; font-weight: 700;">23.33 m</span>
         </div>
-        <div style="font-size: 11px; color: #64748b; margin-top: 1px;">
-            Depth to Water Table (21-May-2025)
+        <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">
+            <b>Depth to Water Table</b><br>
+            Last Updated: 2025-05-21 18:00
         </div>
     </div>
     
@@ -369,41 +381,43 @@
             );
         
     
-            var circle_marker_eea3955d7429a0463905c3b51499a8d9 = L.circleMarker(
+            var circle_marker_3ad3cf7cd08bcaabf4b0e46f6376f6fe = L.circleMarker(
                 [25.34333333, 92.45861111],
                 {"bubblingMouseEvents": true, "color": "#0f172a", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0284c7", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 1.5}
-            ).addTo(map_5735172c03b68ef63fc426fb80c1985d);
+            ).addTo(map_69580e31a9a00b5e46374a9dd7fad476);
         
     
-        var popup_76994f45c056f489a6322551098ac2d2 = L.popup({
-  "maxWidth": 250,
+        var popup_601225a4b72a0acd58ca947f57ea0963 = L.popup({
+  "maxWidth": 260,
 });
 
         
             
-                var html_0f13ab83fa6b47f56b224f02c1b286dc = $(`<div id="html_0f13ab83fa6b47f56b224f02c1b286dc" style="width: 100.0%; height: 100.0%;">     <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">             Station: Latyrke         </div>         <div style="font-weight: 600;">             Current Groundwater Level: <span style="color: #0284c7;">21.91 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 1px;">             Depth to Water Table (21-May-2025)         </div>     </div>     </div>`)[0];
-                popup_76994f45c056f489a6322551098ac2d2.setContent(html_0f13ab83fa6b47f56b224f02c1b286dc);
+                var html_461ea9a6deb55e2127c3493111bc1061 = $(`<div id="html_461ea9a6deb55e2127c3493111bc1061" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">             Station: Latyrke         </div>         <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">             Latest Available Groundwater Level:<br>             <span style="color: #0284c7; font-size: 14px; font-weight: 700;">21.91 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">             <b>Depth to Water Table</b><br>             Last Updated: 2025-05-21 18:00         </div>     </div>     </div>`)[0];
+                popup_601225a4b72a0acd58ca947f57ea0963.setContent(html_461ea9a6deb55e2127c3493111bc1061);
             
         
 
-        circle_marker_eea3955d7429a0463905c3b51499a8d9.bindPopup(popup_76994f45c056f489a6322551098ac2d2)
+        circle_marker_3ad3cf7cd08bcaabf4b0e46f6376f6fe.bindPopup(popup_601225a4b72a0acd58ca947f57ea0963)
         ;
 
         
     
     
-            circle_marker_eea3955d7429a0463905c3b51499a8d9.bindTooltip(
+            circle_marker_3ad3cf7cd08bcaabf4b0e46f6376f6fe.bindTooltip(
                 `<div>
                      
-    <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">
-        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">
+    <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">
+        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">
             Station: Latyrke
         </div>
-        <div style="font-weight: 600;">
-            Current Groundwater Level: <span style="color: #0284c7;">21.91 m</span>
+        <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">
+            Latest Available Groundwater Level:<br>
+            <span style="color: #0284c7; font-size: 14px; font-weight: 700;">21.91 m</span>
         </div>
-        <div style="font-size: 11px; color: #64748b; margin-top: 1px;">
-            Depth to Water Table (21-May-2025)
+        <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">
+            <b>Depth to Water Table</b><br>
+            Last Updated: 2025-05-21 18:00
         </div>
     </div>
     
@@ -414,41 +428,43 @@
             );
         
     
-            var circle_marker_093ce08eead66ee0c6a8e692ab009179 = L.circleMarker(
+            var circle_marker_673de50d96cbd6fcc3e077feb50d7c51 = L.circleMarker(
                 [25.5586, 91.62575],
                 {"bubblingMouseEvents": true, "color": "#0f172a", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0284c7", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 1.5}
-            ).addTo(map_5735172c03b68ef63fc426fb80c1985d);
+            ).addTo(map_69580e31a9a00b5e46374a9dd7fad476);
         
     
-        var popup_f2573c918e002efbb5de47570c71484b = L.popup({
-  "maxWidth": 250,
+        var popup_b74a762a03e90951af7d86835e9f307c = L.popup({
+  "maxWidth": 260,
 });
 
         
             
-                var html_213baf568dbccf83fa549e4407ee7091 = $(`<div id="html_213baf568dbccf83fa549e4407ee7091" style="width: 100.0%; height: 100.0%;">     <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">             Station: Mairang         </div>         <div style="font-weight: 600;">             Current Groundwater Level: <span style="color: #0284c7;">-6.07 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 1px;">             Depth to Water Table (02-May-2025)         </div>     </div>     </div>`)[0];
-                popup_f2573c918e002efbb5de47570c71484b.setContent(html_213baf568dbccf83fa549e4407ee7091);
+                var html_f6656e997848e49a08d08f2b4c1d27ff = $(`<div id="html_f6656e997848e49a08d08f2b4c1d27ff" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">             Station: Mairang         </div>         <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">             Latest Available Groundwater Level:<br>             <span style="color: #0284c7; font-size: 14px; font-weight: 700;">-6.07 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">             <b>Depth to Water Table</b><br>             Last Updated: 2025-05-02 12:00         </div>     </div>     </div>`)[0];
+                popup_b74a762a03e90951af7d86835e9f307c.setContent(html_f6656e997848e49a08d08f2b4c1d27ff);
             
         
 
-        circle_marker_093ce08eead66ee0c6a8e692ab009179.bindPopup(popup_f2573c918e002efbb5de47570c71484b)
+        circle_marker_673de50d96cbd6fcc3e077feb50d7c51.bindPopup(popup_b74a762a03e90951af7d86835e9f307c)
         ;
 
         
     
     
-            circle_marker_093ce08eead66ee0c6a8e692ab009179.bindTooltip(
+            circle_marker_673de50d96cbd6fcc3e077feb50d7c51.bindTooltip(
                 `<div>
                      
-    <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">
-        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">
+    <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">
+        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">
             Station: Mairang
         </div>
-        <div style="font-weight: 600;">
-            Current Groundwater Level: <span style="color: #0284c7;">-6.07 m</span>
+        <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">
+            Latest Available Groundwater Level:<br>
+            <span style="color: #0284c7; font-size: 14px; font-weight: 700;">-6.07 m</span>
         </div>
-        <div style="font-size: 11px; color: #64748b; margin-top: 1px;">
-            Depth to Water Table (02-May-2025)
+        <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">
+            <b>Depth to Water Table</b><br>
+            Last Updated: 2025-05-02 12:00
         </div>
     </div>
     
@@ -459,41 +475,43 @@
             );
         
     
-            var circle_marker_f9b938d944cfa8cf39a170f08660b4e6 = L.circleMarker(
+            var circle_marker_7e34897c827dd28e381df684553abe02 = L.circleMarker(
                 [25.37164167, 91.48180833],
                 {"bubblingMouseEvents": true, "color": "#0f172a", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0284c7", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 1.5}
-            ).addTo(map_5735172c03b68ef63fc426fb80c1985d);
+            ).addTo(map_69580e31a9a00b5e46374a9dd7fad476);
         
     
-        var popup_ce349298905561ec8fac911b131ff20c = L.popup({
-  "maxWidth": 250,
+        var popup_c812d57c6492aea76bba9d3ab39d1d61 = L.popup({
+  "maxWidth": 260,
 });
 
         
             
-                var html_efa4e9b5d0cefa5c82631a1b4aeb5192 = $(`<div id="html_efa4e9b5d0cefa5c82631a1b4aeb5192" style="width: 100.0%; height: 100.0%;">     <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">             Station: Mawkyrwat_1         </div>         <div style="font-weight: 600;">             Current Groundwater Level: <span style="color: #0284c7;">6.45 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 1px;">             Depth to Water Table (22-May-2025)         </div>     </div>     </div>`)[0];
-                popup_ce349298905561ec8fac911b131ff20c.setContent(html_efa4e9b5d0cefa5c82631a1b4aeb5192);
+                var html_6166982f32922f76e96b6b51e1b8d830 = $(`<div id="html_6166982f32922f76e96b6b51e1b8d830" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">             Station: Mawkyrwat_1         </div>         <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">             Latest Available Groundwater Level:<br>             <span style="color: #0284c7; font-size: 14px; font-weight: 700;">6.45 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">             <b>Depth to Water Table</b><br>             Last Updated: 2025-05-22 11:35         </div>     </div>     </div>`)[0];
+                popup_c812d57c6492aea76bba9d3ab39d1d61.setContent(html_6166982f32922f76e96b6b51e1b8d830);
             
         
 
-        circle_marker_f9b938d944cfa8cf39a170f08660b4e6.bindPopup(popup_ce349298905561ec8fac911b131ff20c)
+        circle_marker_7e34897c827dd28e381df684553abe02.bindPopup(popup_c812d57c6492aea76bba9d3ab39d1d61)
         ;
 
         
     
     
-            circle_marker_f9b938d944cfa8cf39a170f08660b4e6.bindTooltip(
+            circle_marker_7e34897c827dd28e381df684553abe02.bindTooltip(
                 `<div>
                      
-    <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">
-        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">
+    <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">
+        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">
             Station: Mawkyrwat_1
         </div>
-        <div style="font-weight: 600;">
-            Current Groundwater Level: <span style="color: #0284c7;">6.45 m</span>
+        <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">
+            Latest Available Groundwater Level:<br>
+            <span style="color: #0284c7; font-size: 14px; font-weight: 700;">6.45 m</span>
         </div>
-        <div style="font-size: 11px; color: #64748b; margin-top: 1px;">
-            Depth to Water Table (22-May-2025)
+        <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">
+            <b>Depth to Water Table</b><br>
+            Last Updated: 2025-05-22 11:35
         </div>
     </div>
     
@@ -504,41 +522,43 @@
             );
         
     
-            var circle_marker_a56a7678daaf5ffa6be8d35b45e298c7 = L.circleMarker(
+            var circle_marker_9884209900013867f4e10bdbedf94c47 = L.circleMarker(
                 [25.54493056, 91.23868056],
                 {"bubblingMouseEvents": true, "color": "#0f172a", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0284c7", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 1.5}
-            ).addTo(map_5735172c03b68ef63fc426fb80c1985d);
+            ).addTo(map_69580e31a9a00b5e46374a9dd7fad476);
         
     
-        var popup_ed65652ac8fec914dc0712768a61a202 = L.popup({
-  "maxWidth": 250,
+        var popup_b33787813cef748f6f6e56d1df116b75 = L.popup({
+  "maxWidth": 260,
 });
 
         
             
-                var html_37900a17173bb8c5b70090171839a985 = $(`<div id="html_37900a17173bb8c5b70090171839a985" style="width: 100.0%; height: 100.0%;">     <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">             Station: Nongstoin_1         </div>         <div style="font-weight: 600;">             Current Groundwater Level: <span style="color: #0284c7;">3.32 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 1px;">             Depth to Water Table (22-May-2025)         </div>     </div>     </div>`)[0];
-                popup_ed65652ac8fec914dc0712768a61a202.setContent(html_37900a17173bb8c5b70090171839a985);
+                var html_5411a5bb22c7e387c0b6a7d27024d485 = $(`<div id="html_5411a5bb22c7e387c0b6a7d27024d485" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">             Station: Nongstoin_1         </div>         <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">             Latest Available Groundwater Level:<br>             <span style="color: #0284c7; font-size: 14px; font-weight: 700;">3.32 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">             <b>Depth to Water Table</b><br>             Last Updated: 2025-05-22 12:00         </div>     </div>     </div>`)[0];
+                popup_b33787813cef748f6f6e56d1df116b75.setContent(html_5411a5bb22c7e387c0b6a7d27024d485);
             
         
 
-        circle_marker_a56a7678daaf5ffa6be8d35b45e298c7.bindPopup(popup_ed65652ac8fec914dc0712768a61a202)
+        circle_marker_9884209900013867f4e10bdbedf94c47.bindPopup(popup_b33787813cef748f6f6e56d1df116b75)
         ;
 
         
     
     
-            circle_marker_a56a7678daaf5ffa6be8d35b45e298c7.bindTooltip(
+            circle_marker_9884209900013867f4e10bdbedf94c47.bindTooltip(
                 `<div>
                      
-    <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">
-        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">
+    <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">
+        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">
             Station: Nongstoin_1
         </div>
-        <div style="font-weight: 600;">
-            Current Groundwater Level: <span style="color: #0284c7;">3.32 m</span>
+        <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">
+            Latest Available Groundwater Level:<br>
+            <span style="color: #0284c7; font-size: 14px; font-weight: 700;">3.32 m</span>
         </div>
-        <div style="font-size: 11px; color: #64748b; margin-top: 1px;">
-            Depth to Water Table (22-May-2025)
+        <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">
+            <b>Depth to Water Table</b><br>
+            Last Updated: 2025-05-22 12:00
         </div>
     </div>
     
@@ -549,41 +569,43 @@
             );
         
     
-            var circle_marker_2212e7986a82404021e8b795336bbfd0 = L.circleMarker(
+            var circle_marker_a7d5b9cf6fe6712e90e2357b7d5419f3 = L.circleMarker(
                 [25.20225, 91.31891667],
                 {"bubblingMouseEvents": true, "color": "#0f172a", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0284c7", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 1.5}
-            ).addTo(map_5735172c03b68ef63fc426fb80c1985d);
+            ).addTo(map_69580e31a9a00b5e46374a9dd7fad476);
         
     
-        var popup_a70521fc50d8d4b4946a20be0a761005 = L.popup({
-  "maxWidth": 250,
+        var popup_cb0fcfe6c7aa26a2f25edcfa35e1aa03 = L.popup({
+  "maxWidth": 260,
 });
 
         
             
-                var html_0095db38ec265f425edb557f5b079dba = $(`<div id="html_0095db38ec265f425edb557f5b079dba" style="width: 100.0%; height: 100.0%;">     <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">             Station: Panchiring         </div>         <div style="font-weight: 600;">             Current Groundwater Level: <span style="color: #0284c7;">3.67 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 1px;">             Depth to Water Table (22-May-2025)         </div>     </div>     </div>`)[0];
-                popup_a70521fc50d8d4b4946a20be0a761005.setContent(html_0095db38ec265f425edb557f5b079dba);
+                var html_29229de11d53c36c8ae69e430d76b876 = $(`<div id="html_29229de11d53c36c8ae69e430d76b876" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">             Station: Panchiring         </div>         <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">             Latest Available Groundwater Level:<br>             <span style="color: #0284c7; font-size: 14px; font-weight: 700;">3.67 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">             <b>Depth to Water Table</b><br>             Last Updated: 2025-05-22 06:00         </div>     </div>     </div>`)[0];
+                popup_cb0fcfe6c7aa26a2f25edcfa35e1aa03.setContent(html_29229de11d53c36c8ae69e430d76b876);
             
         
 
-        circle_marker_2212e7986a82404021e8b795336bbfd0.bindPopup(popup_a70521fc50d8d4b4946a20be0a761005)
+        circle_marker_a7d5b9cf6fe6712e90e2357b7d5419f3.bindPopup(popup_cb0fcfe6c7aa26a2f25edcfa35e1aa03)
         ;
 
         
     
     
-            circle_marker_2212e7986a82404021e8b795336bbfd0.bindTooltip(
+            circle_marker_a7d5b9cf6fe6712e90e2357b7d5419f3.bindTooltip(
                 `<div>
                      
-    <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">
-        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">
+    <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">
+        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">
             Station: Panchiring
         </div>
-        <div style="font-weight: 600;">
-            Current Groundwater Level: <span style="color: #0284c7;">3.67 m</span>
+        <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">
+            Latest Available Groundwater Level:<br>
+            <span style="color: #0284c7; font-size: 14px; font-weight: 700;">3.67 m</span>
         </div>
-        <div style="font-size: 11px; color: #64748b; margin-top: 1px;">
-            Depth to Water Table (22-May-2025)
+        <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">
+            <b>Depth to Water Table</b><br>
+            Last Updated: 2025-05-22 06:00
         </div>
     </div>
     
@@ -594,41 +616,43 @@
             );
         
     
-            var circle_marker_9b0cc4af0705d806ec4d4c881e4815b1 = L.circleMarker(
+            var circle_marker_a12ea24c7f6ed12c54ce9a24322f3665 = L.circleMarker(
                 [25.87719444, 90.02971944],
                 {"bubblingMouseEvents": true, "color": "#0f172a", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0284c7", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 1.5}
-            ).addTo(map_5735172c03b68ef63fc426fb80c1985d);
+            ).addTo(map_69580e31a9a00b5e46374a9dd7fad476);
         
     
-        var popup_bfae49fc0b4f8d72025eead370a9c8fa = L.popup({
-  "maxWidth": 250,
+        var popup_4c6a55f85fcc1c7debd500428a3ab583 = L.popup({
+  "maxWidth": 260,
 });
 
         
             
-                var html_8ed1ef32dfec40af3b5be67edcc55a06 = $(`<div id="html_8ed1ef32dfec40af3b5be67edcc55a06" style="width: 100.0%; height: 100.0%;">     <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">             Station: Phulbari_1         </div>         <div style="font-weight: 600;">             Current Groundwater Level: <span style="color: #0284c7;">0.81 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 1px;">             Depth to Water Table (21-May-2025)         </div>     </div>     </div>`)[0];
-                popup_bfae49fc0b4f8d72025eead370a9c8fa.setContent(html_8ed1ef32dfec40af3b5be67edcc55a06);
+                var html_c7a9c409ad4fc28405b347110b42d4b9 = $(`<div id="html_c7a9c409ad4fc28405b347110b42d4b9" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">             Station: Phulbari_1         </div>         <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">             Latest Available Groundwater Level:<br>             <span style="color: #0284c7; font-size: 14px; font-weight: 700;">0.81 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">             <b>Depth to Water Table</b><br>             Last Updated: 2025-05-21 12:00         </div>     </div>     </div>`)[0];
+                popup_4c6a55f85fcc1c7debd500428a3ab583.setContent(html_c7a9c409ad4fc28405b347110b42d4b9);
             
         
 
-        circle_marker_9b0cc4af0705d806ec4d4c881e4815b1.bindPopup(popup_bfae49fc0b4f8d72025eead370a9c8fa)
+        circle_marker_a12ea24c7f6ed12c54ce9a24322f3665.bindPopup(popup_4c6a55f85fcc1c7debd500428a3ab583)
         ;
 
         
     
     
-            circle_marker_9b0cc4af0705d806ec4d4c881e4815b1.bindTooltip(
+            circle_marker_a12ea24c7f6ed12c54ce9a24322f3665.bindTooltip(
                 `<div>
                      
-    <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">
-        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">
+    <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">
+        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">
             Station: Phulbari_1
         </div>
-        <div style="font-weight: 600;">
-            Current Groundwater Level: <span style="color: #0284c7;">0.81 m</span>
+        <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">
+            Latest Available Groundwater Level:<br>
+            <span style="color: #0284c7; font-size: 14px; font-weight: 700;">0.81 m</span>
         </div>
-        <div style="font-size: 11px; color: #64748b; margin-top: 1px;">
-            Depth to Water Table (21-May-2025)
+        <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">
+            <b>Depth to Water Table</b><br>
+            Last Updated: 2025-05-21 12:00
         </div>
     </div>
     
@@ -639,41 +663,43 @@
             );
         
     
-            var circle_marker_825d4d25edae30b26c7eb79c1bc6b214 = L.circleMarker(
+            var circle_marker_e221cf0df68dc5f0e3b43df0b76f2e03 = L.circleMarker(
                 [25.61017222, 90.73123889],
                 {"bubblingMouseEvents": true, "color": "#0f172a", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0284c7", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 1.5}
-            ).addTo(map_5735172c03b68ef63fc426fb80c1985d);
+            ).addTo(map_69580e31a9a00b5e46374a9dd7fad476);
         
     
-        var popup_8db2344d0b2b22f348ee6ae9d20af179 = L.popup({
-  "maxWidth": 250,
+        var popup_ff0074da1823f088847ab7f36c890385 = L.popup({
+  "maxWidth": 260,
 });
 
         
             
-                var html_eb2cd784e07ab4d5266d6225fd71ac50 = $(`<div id="html_eb2cd784e07ab4d5266d6225fd71ac50" style="width: 100.0%; height: 100.0%;">     <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">             Station: Rongjeng_1         </div>         <div style="font-weight: 600;">             Current Groundwater Level: <span style="color: #0284c7;">1.51 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 1px;">             Depth to Water Table (22-May-2025)         </div>     </div>     </div>`)[0];
-                popup_8db2344d0b2b22f348ee6ae9d20af179.setContent(html_eb2cd784e07ab4d5266d6225fd71ac50);
+                var html_a17385fc0eb805f037adca4a97493cb0 = $(`<div id="html_a17385fc0eb805f037adca4a97493cb0" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">             Station: Rongjeng_1         </div>         <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">             Latest Available Groundwater Level:<br>             <span style="color: #0284c7; font-size: 14px; font-weight: 700;">1.51 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">             <b>Depth to Water Table</b><br>             Last Updated: 2025-05-22 00:00         </div>     </div>     </div>`)[0];
+                popup_ff0074da1823f088847ab7f36c890385.setContent(html_a17385fc0eb805f037adca4a97493cb0);
             
         
 
-        circle_marker_825d4d25edae30b26c7eb79c1bc6b214.bindPopup(popup_8db2344d0b2b22f348ee6ae9d20af179)
+        circle_marker_e221cf0df68dc5f0e3b43df0b76f2e03.bindPopup(popup_ff0074da1823f088847ab7f36c890385)
         ;
 
         
     
     
-            circle_marker_825d4d25edae30b26c7eb79c1bc6b214.bindTooltip(
+            circle_marker_e221cf0df68dc5f0e3b43df0b76f2e03.bindTooltip(
                 `<div>
                      
-    <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">
-        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">
+    <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">
+        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">
             Station: Rongjeng_1
         </div>
-        <div style="font-weight: 600;">
-            Current Groundwater Level: <span style="color: #0284c7;">1.51 m</span>
+        <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">
+            Latest Available Groundwater Level:<br>
+            <span style="color: #0284c7; font-size: 14px; font-weight: 700;">1.51 m</span>
         </div>
-        <div style="font-size: 11px; color: #64748b; margin-top: 1px;">
-            Depth to Water Table (22-May-2025)
+        <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">
+            <b>Depth to Water Table</b><br>
+            Last Updated: 2025-05-22 00:00
         </div>
     </div>
     
@@ -684,41 +710,43 @@
             );
         
     
-            var circle_marker_da677abd4ec8980e6291d47f59e311bc = L.circleMarker(
+            var circle_marker_13058002a6f50d6c068cefce634c2bec = L.circleMarker(
                 [25.88444444, 91.88222222],
                 {"bubblingMouseEvents": true, "color": "#0f172a", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0284c7", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 1.5}
-            ).addTo(map_5735172c03b68ef63fc426fb80c1985d);
+            ).addTo(map_69580e31a9a00b5e46374a9dd7fad476);
         
     
-        var popup_4f93abf0da1caa25a6a7b76d6d70231d = L.popup({
-  "maxWidth": 250,
+        var popup_bd2406eb4777519b8c4a580977dc7ba3 = L.popup({
+  "maxWidth": 260,
 });
 
         
             
-                var html_bb076104a231c8978cd9f58cd0ad99ac = $(`<div id="html_bb076104a231c8978cd9f58cd0ad99ac" style="width: 100.0%; height: 100.0%;">     <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">             Station: Saiden          </div>         <div style="font-weight: 600;">             Current Groundwater Level: <span style="color: #0284c7;">1.99 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 1px;">             Depth to Water Table (21-May-2025)         </div>     </div>     </div>`)[0];
-                popup_4f93abf0da1caa25a6a7b76d6d70231d.setContent(html_bb076104a231c8978cd9f58cd0ad99ac);
+                var html_b3b82b1d3419be737f5f091cbb99279a = $(`<div id="html_b3b82b1d3419be737f5f091cbb99279a" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">             Station: Saiden          </div>         <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">             Latest Available Groundwater Level:<br>             <span style="color: #0284c7; font-size: 14px; font-weight: 700;">1.99 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">             <b>Depth to Water Table</b><br>             Last Updated: 2025-05-21 12:00         </div>     </div>     </div>`)[0];
+                popup_bd2406eb4777519b8c4a580977dc7ba3.setContent(html_b3b82b1d3419be737f5f091cbb99279a);
             
         
 
-        circle_marker_da677abd4ec8980e6291d47f59e311bc.bindPopup(popup_4f93abf0da1caa25a6a7b76d6d70231d)
+        circle_marker_13058002a6f50d6c068cefce634c2bec.bindPopup(popup_bd2406eb4777519b8c4a580977dc7ba3)
         ;
 
         
     
     
-            circle_marker_da677abd4ec8980e6291d47f59e311bc.bindTooltip(
+            circle_marker_13058002a6f50d6c068cefce634c2bec.bindTooltip(
                 `<div>
                      
-    <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">
-        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">
+    <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">
+        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">
             Station: Saiden 
         </div>
-        <div style="font-weight: 600;">
-            Current Groundwater Level: <span style="color: #0284c7;">1.99 m</span>
+        <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">
+            Latest Available Groundwater Level:<br>
+            <span style="color: #0284c7; font-size: 14px; font-weight: 700;">1.99 m</span>
         </div>
-        <div style="font-size: 11px; color: #64748b; margin-top: 1px;">
-            Depth to Water Table (21-May-2025)
+        <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">
+            <b>Depth to Water Table</b><br>
+            Last Updated: 2025-05-21 12:00
         </div>
     </div>
     
@@ -729,41 +757,43 @@
             );
         
     
-            var circle_marker_20c3cea1a0c3c69580be99c8bc595876 = L.circleMarker(
+            var circle_marker_40f5fd0bfa2f842003e03928efe9c642 = L.circleMarker(
                 [25.58277778, 91.88694444],
                 {"bubblingMouseEvents": true, "color": "#0f172a", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0284c7", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 1.5}
-            ).addTo(map_5735172c03b68ef63fc426fb80c1985d);
+            ).addTo(map_69580e31a9a00b5e46374a9dd7fad476);
         
     
-        var popup_edfb858521a99cd336ffe963d01d97e3 = L.popup({
-  "maxWidth": 250,
+        var popup_b77bf30b8ff0e9ac160a433620d1e32e = L.popup({
+  "maxWidth": 260,
 });
 
         
             
-                var html_bf945c21d440caa5926a064eb6e2e30a = $(`<div id="html_bf945c21d440caa5926a064eb6e2e30a" style="width: 100.0%; height: 100.0%;">     <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">             Station: Shillong         </div>         <div style="font-weight: 600;">             Current Groundwater Level: <span style="color: #0284c7;">2.02 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 1px;">             Depth to Water Table (03-Feb-2025)         </div>     </div>     </div>`)[0];
-                popup_edfb858521a99cd336ffe963d01d97e3.setContent(html_bf945c21d440caa5926a064eb6e2e30a);
+                var html_37e87fdac96131938f765ab4b8cc4e39 = $(`<div id="html_37e87fdac96131938f765ab4b8cc4e39" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">             Station: Shillong         </div>         <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">             Latest Available Groundwater Level:<br>             <span style="color: #0284c7; font-size: 14px; font-weight: 700;">2.02 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">             <b>Depth to Water Table</b><br>             Last Updated: 2025-02-03 18:00         </div>     </div>     </div>`)[0];
+                popup_b77bf30b8ff0e9ac160a433620d1e32e.setContent(html_37e87fdac96131938f765ab4b8cc4e39);
             
         
 
-        circle_marker_20c3cea1a0c3c69580be99c8bc595876.bindPopup(popup_edfb858521a99cd336ffe963d01d97e3)
+        circle_marker_40f5fd0bfa2f842003e03928efe9c642.bindPopup(popup_b77bf30b8ff0e9ac160a433620d1e32e)
         ;
 
         
     
     
-            circle_marker_20c3cea1a0c3c69580be99c8bc595876.bindTooltip(
+            circle_marker_40f5fd0bfa2f842003e03928efe9c642.bindTooltip(
                 `<div>
                      
-    <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">
-        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">
+    <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">
+        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">
             Station: Shillong
         </div>
-        <div style="font-weight: 600;">
-            Current Groundwater Level: <span style="color: #0284c7;">2.02 m</span>
+        <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">
+            Latest Available Groundwater Level:<br>
+            <span style="color: #0284c7; font-size: 14px; font-weight: 700;">2.02 m</span>
         </div>
-        <div style="font-size: 11px; color: #64748b; margin-top: 1px;">
-            Depth to Water Table (03-Feb-2025)
+        <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">
+            <b>Depth to Water Table</b><br>
+            Last Updated: 2025-02-03 18:00
         </div>
     </div>
     
@@ -774,41 +804,43 @@
             );
         
     
-            var circle_marker_6d99446da2a8e0954464698d87d21c2e = L.circleMarker(
+            var circle_marker_32ced00d5076c1a4f70bfc3f64f24dee = L.circleMarker(
                 [25.8981, 90.64253333],
                 {"bubblingMouseEvents": true, "color": "#0f172a", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0284c7", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 1.5}
-            ).addTo(map_5735172c03b68ef63fc426fb80c1985d);
+            ).addTo(map_69580e31a9a00b5e46374a9dd7fad476);
         
     
-        var popup_b5ecafaba5a1c2b05a7656cad3a10d87 = L.popup({
-  "maxWidth": 250,
+        var popup_eb9a2a02afb104dccfd141b7c83e4c07 = L.popup({
+  "maxWidth": 260,
 });
 
         
             
-                var html_c5dc8752a90805c6c3989f8cd148b16d = $(`<div id="html_c5dc8752a90805c6c3989f8cd148b16d" style="width: 100.0%; height: 100.0%;">     <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">             Station: Soksan         </div>         <div style="font-weight: 600;">             Current Groundwater Level: <span style="color: #0284c7;">7.72 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 1px;">             Depth to Water Table (16-Jan-2025)         </div>     </div>     </div>`)[0];
-                popup_b5ecafaba5a1c2b05a7656cad3a10d87.setContent(html_c5dc8752a90805c6c3989f8cd148b16d);
+                var html_31ac426a816a6c6f06edca549d284d17 = $(`<div id="html_31ac426a816a6c6f06edca549d284d17" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">             Station: Soksan         </div>         <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">             Latest Available Groundwater Level:<br>             <span style="color: #0284c7; font-size: 14px; font-weight: 700;">7.72 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">             <b>Depth to Water Table</b><br>             Last Updated: 2025-01-16 18:00         </div>     </div>     </div>`)[0];
+                popup_eb9a2a02afb104dccfd141b7c83e4c07.setContent(html_31ac426a816a6c6f06edca549d284d17);
             
         
 
-        circle_marker_6d99446da2a8e0954464698d87d21c2e.bindPopup(popup_b5ecafaba5a1c2b05a7656cad3a10d87)
+        circle_marker_32ced00d5076c1a4f70bfc3f64f24dee.bindPopup(popup_eb9a2a02afb104dccfd141b7c83e4c07)
         ;
 
         
     
     
-            circle_marker_6d99446da2a8e0954464698d87d21c2e.bindTooltip(
+            circle_marker_32ced00d5076c1a4f70bfc3f64f24dee.bindTooltip(
                 `<div>
                      
-    <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">
-        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">
+    <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">
+        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">
             Station: Soksan
         </div>
-        <div style="font-weight: 600;">
-            Current Groundwater Level: <span style="color: #0284c7;">7.72 m</span>
+        <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">
+            Latest Available Groundwater Level:<br>
+            <span style="color: #0284c7; font-size: 14px; font-weight: 700;">7.72 m</span>
         </div>
-        <div style="font-size: 11px; color: #64748b; margin-top: 1px;">
-            Depth to Water Table (16-Jan-2025)
+        <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">
+            <b>Depth to Water Table</b><br>
+            Last Updated: 2025-01-16 18:00
         </div>
     </div>
     
@@ -819,41 +851,43 @@
             );
         
     
-            var circle_marker_85b1ae77783517b48445bf8324b816f2 = L.circleMarker(
+            var circle_marker_67bb4937595b34259af5798c9cd5ae2f = L.circleMarker(
                 [25.5085, 90.60438889],
                 {"bubblingMouseEvents": true, "color": "#0f172a", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0284c7", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 1.5}
-            ).addTo(map_5735172c03b68ef63fc426fb80c1985d);
+            ).addTo(map_69580e31a9a00b5e46374a9dd7fad476);
         
     
-        var popup_63fb3dd8017f038e0a3395bca2b54818 = L.popup({
-  "maxWidth": 250,
+        var popup_0ce30645cd7c2c9f1fe1b705fe01a4eb = L.popup({
+  "maxWidth": 260,
 });
 
         
             
-                var html_6b0ce174dbe19e1f672d2817e82d106b = $(`<div id="html_6b0ce174dbe19e1f672d2817e82d106b" style="width: 100.0%; height: 100.0%;">     <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">             Station: Williamnagar         </div>         <div style="font-weight: 600;">             Current Groundwater Level: <span style="color: #0284c7;">5.68 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 1px;">             Depth to Water Table (22-May-2025)         </div>     </div>     </div>`)[0];
-                popup_63fb3dd8017f038e0a3395bca2b54818.setContent(html_6b0ce174dbe19e1f672d2817e82d106b);
+                var html_e5f5fc04fa007e55640f8707825a9035 = $(`<div id="html_e5f5fc04fa007e55640f8707825a9035" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">             Station: Williamnagar         </div>         <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">             Latest Available Groundwater Level:<br>             <span style="color: #0284c7; font-size: 14px; font-weight: 700;">5.68 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">             <b>Depth to Water Table</b><br>             Last Updated: 2025-05-22 06:00         </div>     </div>     </div>`)[0];
+                popup_0ce30645cd7c2c9f1fe1b705fe01a4eb.setContent(html_e5f5fc04fa007e55640f8707825a9035);
             
         
 
-        circle_marker_85b1ae77783517b48445bf8324b816f2.bindPopup(popup_63fb3dd8017f038e0a3395bca2b54818)
+        circle_marker_67bb4937595b34259af5798c9cd5ae2f.bindPopup(popup_0ce30645cd7c2c9f1fe1b705fe01a4eb)
         ;
 
         
     
     
-            circle_marker_85b1ae77783517b48445bf8324b816f2.bindTooltip(
+            circle_marker_67bb4937595b34259af5798c9cd5ae2f.bindTooltip(
                 `<div>
                      
-    <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">
-        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">
+    <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">
+        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">
             Station: Williamnagar
         </div>
-        <div style="font-weight: 600;">
-            Current Groundwater Level: <span style="color: #0284c7;">5.68 m</span>
+        <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">
+            Latest Available Groundwater Level:<br>
+            <span style="color: #0284c7; font-size: 14px; font-weight: 700;">5.68 m</span>
         </div>
-        <div style="font-size: 11px; color: #64748b; margin-top: 1px;">
-            Depth to Water Table (22-May-2025)
+        <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">
+            <b>Depth to Water Table</b><br>
+            Last Updated: 2025-05-22 06:00
         </div>
     </div>
     
@@ -864,41 +898,43 @@
             );
         
     
-            var circle_marker_5733cd4022fbaf2671890d7e12c65014 = L.circleMarker(
+            var circle_marker_f7e793ba77b46bdcc80078d80fb718d7 = L.circleMarker(
                 [25.37611111, 89.88555556],
                 {"bubblingMouseEvents": true, "color": "#0f172a", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0284c7", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 1.5}
-            ).addTo(map_5735172c03b68ef63fc426fb80c1985d);
+            ).addTo(map_69580e31a9a00b5e46374a9dd7fad476);
         
     
-        var popup_dbebcfdc4c6be4e278d5f1bfa82391ee = L.popup({
-  "maxWidth": 250,
+        var popup_f74ea87faf71a379bb124c8967478040 = L.popup({
+  "maxWidth": 260,
 });
 
         
             
-                var html_50a5b80a779970e01887cdc8e450fefa = $(`<div id="html_50a5b80a779970e01887cdc8e450fefa" style="width: 100.0%; height: 100.0%;">     <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">             Station: Zikzak_1         </div>         <div style="font-weight: 600;">             Current Groundwater Level: <span style="color: #0284c7;">2.18 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 1px;">             Depth to Water Table (21-May-2025)         </div>     </div>     </div>`)[0];
-                popup_dbebcfdc4c6be4e278d5f1bfa82391ee.setContent(html_50a5b80a779970e01887cdc8e450fefa);
+                var html_104178da596743d4f568b4940b6ced90 = $(`<div id="html_104178da596743d4f568b4940b6ced90" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">         <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">             Station: Zikzak_1         </div>         <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">             Latest Available Groundwater Level:<br>             <span style="color: #0284c7; font-size: 14px; font-weight: 700;">2.18 m</span>         </div>         <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">             <b>Depth to Water Table</b><br>             Last Updated: 2025-05-21 18:00         </div>     </div>     </div>`)[0];
+                popup_f74ea87faf71a379bb124c8967478040.setContent(html_104178da596743d4f568b4940b6ced90);
             
         
 
-        circle_marker_5733cd4022fbaf2671890d7e12c65014.bindPopup(popup_dbebcfdc4c6be4e278d5f1bfa82391ee)
+        circle_marker_f7e793ba77b46bdcc80078d80fb718d7.bindPopup(popup_f74ea87faf71a379bb124c8967478040)
         ;
 
         
     
     
-            circle_marker_5733cd4022fbaf2671890d7e12c65014.bindTooltip(
+            circle_marker_f7e793ba77b46bdcc80078d80fb718d7.bindTooltip(
                 `<div>
                      
-    <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 2px;">
-        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 2px;">
+    <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #0f172a; padding: 3px 5px; min-width: 180px;">
+        <div style="font-size: 13px; font-weight: 700; color: #0284c7; margin-bottom: 3px;">
             Station: Zikzak_1
         </div>
-        <div style="font-weight: 600;">
-            Current Groundwater Level: <span style="color: #0284c7;">2.18 m</span>
+        <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">
+            Latest Available Groundwater Level:<br>
+            <span style="color: #0284c7; font-size: 14px; font-weight: 700;">2.18 m</span>
         </div>
-        <div style="font-size: 11px; color: #64748b; margin-top: 1px;">
-            Depth to Water Table (21-May-2025)
+        <div style="font-size: 11px; color: #64748b; margin-top: 3px; border-top: 1px solid #e2e8f0; padding-top: 3px;">
+            <b>Depth to Water Table</b><br>
+            Last Updated: 2025-05-21 18:00
         </div>
     </div>
     
@@ -909,7 +945,7 @@
             );
         
     
-            map_5735172c03b68ef63fc426fb80c1985d.fitBounds(
+            map_69580e31a9a00b5e46374a9dd7fad476.fitBounds(
                 [[25.20103333, 89.88555556], [26.0775, 92.45861111]],
                 {}
             );
