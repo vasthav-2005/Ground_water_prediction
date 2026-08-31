@@ -119,9 +119,47 @@ def predict_lightweight(row_dict):
 
     raise RuntimeError("No valid ML model artifact available.")
 
+from datetime import datetime, timezone, timedelta
+
+def get_rolling_months_ist():
+    ist = timezone(timedelta(hours=5, minutes=30))
+    now = datetime.now(ist)
+    current_year = now.year
+    current_month_idx = now.month - 1
+
+    month_names = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+    ]
+
+    rolling = []
+    for offset in range(4):
+        total_idx = current_month_idx + offset
+        actual_month = (total_idx % 12) + 1
+        year = current_year + (total_idx // 12)
+        month_name = month_names[actual_month - 1]
+
+        suffix = f"Month {offset + 1}"
+        if offset == 0:
+            suffix += " – Current Month"
+        elif offset == 1:
+            suffix += " – Next Month"
+
+        rolling.append({
+            'relative_index': offset + 1,
+            'actual_month': actual_month,
+            'year': year,
+            'month_name': month_name,
+            'label': f"{month_name} ({suffix})",
+            'is_default': (offset == 0)
+        })
+
+    return rolling
+
 @app.route('/')
 def home():
-    return render_template('index.html', stations=STATION_LIST)
+    rolling_months = get_rolling_months_ist()
+    return render_template('index.html', stations=STATION_LIST, rolling_months=rolling_months)
 
 @app.route('/water_wells_map')
 @app.route('/water_wells_map.html')
@@ -158,7 +196,8 @@ def health():
 @app.route('/predict', methods=['GET', 'POST'])
 def predict():
     if request.method == 'GET':
-        return render_template('index.html', stations=STATION_LIST)
+        rolling_months = get_rolling_months_ist()
+        return render_template('index.html', stations=STATION_LIST, rolling_months=rolling_months)
     try:
         if request.is_json:
             data = request.get_json()
@@ -173,12 +212,25 @@ def predict():
         else:
             station_code = int(station_code)
 
-        # Determine IST runtime date defaults
-        from datetime import datetime, timezone, timedelta
-        now_ist = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+        # Determine IST runtime date defaults & month mapping
+        ist = timezone(timedelta(hours=5, minutes=30))
+        now_ist = datetime.now(ist)
 
-        year = int(data.get('year') or now_ist.year)
-        month = int(data.get('month') or now_ist.month)
+        rel_month = data.get('relative_month') or data.get('relativeMonth')
+        month_raw = data.get('month')
+
+        if rel_month is not None and str(rel_month).strip() in ['1', '2', '3', '4']:
+            rel_idx = int(rel_month) - 1
+            total_idx = (now_ist.month - 1) + rel_idx
+            month = (total_idx % 12) + 1
+            year = now_ist.year + (total_idx // 12)
+        elif month_raw is not None and str(month_raw).strip() != '':
+            month = int(month_raw)
+            year = int(data.get('year') or now_ist.year)
+        else:
+            month = now_ist.month
+            year = now_ist.year
+
         day = int(data.get('day', 15))
         hour = int(data.get('hour', 12))
 

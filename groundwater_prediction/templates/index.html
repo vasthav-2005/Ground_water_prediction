@@ -103,9 +103,17 @@
                             <div class="col-12">
                                 <label for="month" class="form-label">Select Target Month <span class="text-muted small">(Rolling 4-Month Forecast)</span></label>
                                 <select class="form-select custom-input" id="month" name="month" required>
-                                    <!-- Populated dynamically via JS with rolling relative months -->
+                                    {% if rolling_months %}
+                                        {% for m in rolling_months %}
+                                            <option value="{{ m.actual_month }}" data-year="{{ m.year }}" data-rel="{{ m.relative_index }}" {% if m.is_default %}selected{% endif %}>
+                                                {{ m.label }}
+                                            </option>
+                                        {% endfor %}
+                                    {% else %}
+                                        <!-- Fallback populated dynamically via JS if rolling_months not passed -->
+                                    {% endif %}
                                 </select>
-                                <input type="hidden" id="year" name="year" value="">
+                                <input type="hidden" id="year" name="year" value="{{ rolling_months[0].year if rolling_months else '' }}">
                             </div>
                         </div>
 
