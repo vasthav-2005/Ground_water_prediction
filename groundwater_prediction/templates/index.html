@@ -101,21 +101,11 @@
                             </div>
 
                             <div class="col-12">
-                                <label for="month" class="form-label">Select Month</label>
+                                <label for="month" class="form-label">Select Target Month <span class="text-muted small">(Rolling 4-Month Forecast)</span></label>
                                 <select class="form-select custom-input" id="month" name="month" required>
-                                    <option value="1">January (Month 1)</option>
-                                    <option value="2">February (Month 2)</option>
-                                    <option value="3">March (Month 3)</option>
-                                    <option value="4">April (Month 4)</option>
-                                    <option value="5">May (Month 5)</option>
-                                    <option value="6" selected>June (Month 6)</option>
-                                    <option value="7">July (Month 7)</option>
-                                    <option value="8">August (Month 8)</option>
-                                    <option value="9">September (Month 9)</option>
-                                    <option value="10">October (Month 10)</option>
-                                    <option value="11">November (Month 11)</option>
-                                    <option value="12">December (Month 12)</option>
+                                    <!-- Populated dynamically via JS with rolling relative months -->
                                 </select>
+                                <input type="hidden" id="year" name="year" value="">
                             </div>
                         </div>
 

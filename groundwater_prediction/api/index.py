@@ -173,8 +173,12 @@ def predict():
         else:
             station_code = int(station_code)
 
-        year = int(data.get('year', 2024))
-        month = int(data.get('month', 6))
+        # Determine IST runtime date defaults
+        from datetime import datetime, timezone, timedelta
+        now_ist = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+
+        year = int(data.get('year') or now_ist.year)
+        month = int(data.get('month') or now_ist.month)
         day = int(data.get('day', 15))
         hour = int(data.get('hour', 12))
 

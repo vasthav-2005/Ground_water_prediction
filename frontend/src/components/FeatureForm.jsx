@@ -1,14 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { MapPin, Calendar, Zap, RefreshCw } from 'lucide-react';
 import SamplePresets from './SamplePresets';
-import { MONTHS } from '../utils/samplePresets';
+import { getRollingMonths } from '../utils/samplePresets';
 import { validatePredictionForm } from '../utils/validators';
 
 const FeatureForm = ({ stations, selectedStation, onStationChange, onSubmit, isLoading }) => {
+  const rollingMonths = useMemo(() => getRollingMonths(), []);
+  const currentMonthOption = rollingMonths[0];
+
   const [formData, setFormData] = useState({
     station: selectedStation || 'Shillong',
     stationCode: 14,
-    month: 6
+    month: currentMonthOption.actualMonth,
+    year: currentMonthOption.year,
+    relativeIndex: 1
   });
 
   const [errors, setErrors] = useState({});
@@ -39,10 +44,14 @@ const FeatureForm = ({ stations, selectedStation, onStationChange, onSubmit, isL
   };
 
   const handleMonthChange = (e) => {
-    const m = parseInt(e.target.value, 10);
+    const relIndex = parseInt(e.target.value, 10); // 1, 2, 3, 4
+    const selectedOption = rollingMonths.find(m => m.relativeIndex === relIndex) || currentMonthOption;
+
     setFormData(prev => ({
       ...prev,
-      month: m
+      month: selectedOption.actualMonth,
+      year: selectedOption.year,
+      relativeIndex: selectedOption.relativeIndex
     }));
     if (errors.month) setErrors(prev => ({ ...prev, month: null }));
   };
@@ -51,7 +60,9 @@ const FeatureForm = ({ stations, selectedStation, onStationChange, onSubmit, isL
     setFormData({
       station: preset.station,
       stationCode: preset.stationCode,
-      month: preset.month
+      month: preset.month,
+      year: preset.year,
+      relativeIndex: preset.relativeIndex || 1
     });
     if (onStationChange) onStationChange(preset.station);
     setErrors({});
@@ -63,7 +74,9 @@ const FeatureForm = ({ stations, selectedStation, onStationChange, onSubmit, isL
     setFormData({
       station: defaultSt,
       stationCode: defaultCode,
-      month: 1
+      month: currentMonthOption.actualMonth,
+      year: currentMonthOption.year,
+      relativeIndex: 1
     });
     if (onStationChange) onStationChange(defaultSt);
     setErrors({});
@@ -79,7 +92,9 @@ const FeatureForm = ({ stations, selectedStation, onStationChange, onSubmit, isL
     onSubmit({
       station: formData.station,
       stationCode: formData.stationCode,
-      month: formData.month
+      month: formData.month,
+      year: formData.year,
+      relativeIndex: formData.relativeIndex
     });
   };
 
@@ -117,20 +132,20 @@ const FeatureForm = ({ stations, selectedStation, onStationChange, onSubmit, isL
             {errors.station && <span className="error-text">{errors.station}</span>}
           </div>
 
-          {/* Month Selection Dropdown (January - December) */}
+          {/* Rolling Relative Month Selection Dropdown (Only 4 Relative Months) */}
           <div className="form-group">
             <label className="form-label">
-              Select Month
-              <span className="hint">January – December</span>
+              Select Target Month
+              <span className="hint">Rolling 4-Month Forecast</span>
             </label>
             <select
               className={`form-select ${errors.month ? 'error' : ''}`}
-              value={formData.month}
+              value={formData.relativeIndex}
               onChange={handleMonthChange}
             >
-              {MONTHS.map(m => (
-                <option key={m.value} value={m.value}>
-                  {m.label} (Month {m.value})
+              {rollingMonths.map(m => (
+                <option key={m.relativeIndex} value={m.relativeIndex}>
+                  {m.label}
                 </option>
               ))}
             </select>

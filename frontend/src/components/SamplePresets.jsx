@@ -1,8 +1,10 @@
 import React from 'react';
-import { SAMPLE_PRESETS } from '../utils/samplePresets';
+import { getSamplePresets } from '../utils/samplePresets';
 import { Sparkles, MapPin } from 'lucide-react';
 
 const SamplePresets = ({ onSelectPreset }) => {
+  const presets = getSamplePresets();
+
   return (
     <div style={{ marginBottom: '1.5rem' }}>
       <div style={{
@@ -15,11 +17,11 @@ const SamplePresets = ({ onSelectPreset }) => {
         marginBottom: '0.6rem'
       }}>
         <Sparkles size={16} color="var(--color-primary)" />
-        <span>Quick Load Sample Scenarios:</span>
+        <span>Quick Load Rolling Sample Scenarios:</span>
       </div>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-        {SAMPLE_PRESETS.map((preset) => (
+        {presets.map((preset) => (
           <button
             key={preset.id}
             type="button"

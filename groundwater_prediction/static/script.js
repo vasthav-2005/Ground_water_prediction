@@ -57,6 +57,42 @@ document.addEventListener('DOMContentLoaded', () => {
         updatePredictionResultUI(result);
       }
 
+const ALL_MONTH_NAMES = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'
+];
+
+function getISTRollingMonths() {
+  const now = new Date();
+  const istOffset = 5.5 * 60 * 60 * 1000;
+  const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+  const istDate = new Date(utc + istOffset);
+
+  const currentYear = istDate.getFullYear();
+  const currentMonthIdx = istDate.getMonth(); // 0..11
+
+  const rolling = [];
+  for (let offset = 0; offset < 4; offset++) {
+    const totalIdx = currentMonthIdx + offset;
+    const actualMonthNum = (totalIdx % 12) + 1; // 1..12
+    const targetYear = currentYear + Math.floor(totalIdx / 12);
+    const monthName = ALL_MONTH_NAMES[actualMonthNum - 1];
+
+    let suffix = `Month ${offset + 1}`;
+    if (offset === 0) suffix += ' – Current Month';
+    else if (offset === 1) suffix += ' – Next Month';
+
+    rolling.push({
+      relativeIndex: offset + 1,
+      actualMonth: actualMonthNum,
+      year: targetYear,
+      monthName: monthName,
+      label: `${monthName} (${suffix})`
+    });
+  }
+  return rolling;
+}
+
 const STATIONS_COORDS = [
   { name: 'Amlarem', code: 0, lat: 25.285278, lng: 92.103056 },
   { name: 'Barengapara', code: 1, lat: 25.201033, lng: 90.310283 },
@@ -85,17 +121,46 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('predictionForm');
   const stationSelect = document.getElementById('station');
   const stationCodeInput = document.getElementById('stationCode');
+  const monthSelect = document.getElementById('month');
+  const yearInput = document.getElementById('year');
+
+  // Populate rolling 4 months
+  const rolling = getISTRollingMonths();
+  if (monthSelect) {
+    monthSelect.innerHTML = '';
+    rolling.forEach((m, idx) => {
+      const opt = document.createElement('option');
+      opt.value = m.actualMonth;
+      opt.setAttribute('data-year', m.year);
+      opt.setAttribute('data-rel', m.relativeIndex);
+      opt.innerText = m.label;
+      if (idx === 0) {
+        opt.selected = true;
+        if (yearInput) yearInput.value = m.year;
+      }
+      monthSelect.appendChild(opt);
+    });
+
+    monthSelect.addEventListener('change', () => {
+      const selectedOption = monthSelect.options[monthSelect.selectedIndex];
+      if (selectedOption && yearInput) {
+        yearInput.value = selectedOption.getAttribute('data-year');
+      }
+    });
+  }
 
   // Initialize Flask Leaflet Map
   initFlaskMap();
 
   // Sync Station Code hidden input & map focus
-  stationSelect.addEventListener('change', () => {
-    const selectedOption = stationSelect.options[stationSelect.selectedIndex];
-    const code = selectedOption.getAttribute('data-code') || '0';
-    stationCodeInput.value = code;
-    focusStationOnMap(selectedOption.value);
-  });
+  if (stationSelect) {
+    stationSelect.addEventListener('change', () => {
+      const selectedOption = stationSelect.options[stationSelect.selectedIndex];
+      const code = selectedOption.getAttribute('data-code') || '0';
+      stationCodeInput.value = code;
+      focusStationOnMap(selectedOption.value);
+    });
+  }
 
   // Form submit AJAX listener
   form.addEventListener('submit', async (e) => {

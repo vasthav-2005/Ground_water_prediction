@@ -1,6 +1,6 @@
 import React from 'react';
 import { Droplet, AlertCircle, CheckCircle, ShieldAlert, Calendar, MapPin } from 'lucide-react';
-import { MONTHS } from '../utils/samplePresets';
+import { getMonthName } from '../utils/samplePresets';
 
 const PredictionResult = ({ result }) => {
   if (!result) {
@@ -28,7 +28,7 @@ const PredictionResult = ({ result }) => {
           Ready for Prediction
         </h3>
         <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', maxWidth: '360px', marginTop: '0.5rem' }}>
-          Select a <strong>Station</strong> and <strong>Month</strong> from the form, then click <strong>Predict Groundwater Level</strong>.
+          Select a <strong>Station</strong> and <strong>Target Month</strong> from the form, then click <strong>Predict Groundwater Level</strong>.
         </p>
       </div>
     );
@@ -49,8 +49,9 @@ const PredictionResult = ({ result }) => {
   };
 
   const statusInfo = getStatusStyle(classification);
-  const monthObj = MONTHS.find(m => m.value === inputs_evaluated?.Month);
-  const monthLabel = monthObj ? monthObj.label : `Month ${inputs_evaluated?.Month}`;
+  const monthName = inputs_evaluated?.Month ? getMonthName(inputs_evaluated.Month) : '';
+  const yearNum = inputs_evaluated?.Year || new Date().getFullYear();
+  const monthLabel = monthName ? `${monthName} ${yearNum}` : `Month ${inputs_evaluated?.Month}`;
 
   return (
     <div className="glass-panel" style={{ overflow: 'hidden' }}>
