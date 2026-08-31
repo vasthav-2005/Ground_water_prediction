@@ -1,34 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { MapPin, Calendar, Zap, RefreshCw } from 'lucide-react';
 import SamplePresets from './SamplePresets';
-import { MONTHS } from '../utils/samplePresets';
+import { getRollingMonths } from '../utils/samplePresets';
 import { validatePredictionForm } from '../utils/validators';
 
-const FeatureForm = ({ stations, onSubmit, isLoading }) => {
+const FeatureForm = ({ stations, selectedStation, onStationChange, onSubmit, isLoading }) => {
+  const rollingMonths = useMemo(() => getRollingMonths(), []);
+  const currentMonthOption = rollingMonths[0];
+
   const [formData, setFormData] = useState({
-    station: 'Shillong',
+    station: selectedStation || 'Shillong',
     stationCode: 14,
-    month: 6
+    month: currentMonthOption.actualMonth,
+    year: currentMonthOption.year,
+    relativeIndex: 1
   });
 
   const [errors, setErrors] = useState({});
 
+  // Sync internal state when external selectedStation changes (e.g. clicked on map)
+  React.useEffect(() => {
+    if (selectedStation && selectedStation !== formData.station) {
+      const matched = stations.find(s => s.name === selectedStation || String(s.code) === String(selectedStation));
+      setFormData(prev => ({
+        ...prev,
+        station: matched ? matched.name : selectedStation,
+        stationCode: matched ? matched.code : prev.stationCode
+      }));
+    }
+  }, [selectedStation, stations]);
+
   const handleStationChange = (e) => {
     const selectedName = e.target.value;
     const matched = stations.find(s => s.name === selectedName);
+    const newCode = matched ? matched.code : 0;
     setFormData(prev => ({
       ...prev,
       station: selectedName,
-      stationCode: matched ? matched.code : 0
+      stationCode: newCode
     }));
+    if (onStationChange) onStationChange(selectedName);
     if (errors.station) setErrors(prev => ({ ...prev, station: null }));
   };
 
   const handleMonthChange = (e) => {
-    const m = parseInt(e.target.value, 10);
+    const relIndex = parseInt(e.target.value, 10); // 1, 2, 3, 4
+    const selectedOption = rollingMonths.find(m => m.relativeIndex === relIndex) || currentMonthOption;
+
     setFormData(prev => ({
       ...prev,
-      month: m
+      month: selectedOption.actualMonth,
+      year: selectedOption.year,
+      relativeIndex: selectedOption.relativeIndex
     }));
     if (errors.month) setErrors(prev => ({ ...prev, month: null }));
   };
@@ -37,17 +60,25 @@ const FeatureForm = ({ stations, onSubmit, isLoading }) => {
     setFormData({
       station: preset.station,
       stationCode: preset.stationCode,
-      month: preset.month
+      month: preset.month,
+      year: preset.year,
+      relativeIndex: preset.relativeIndex || 1
     });
+    if (onStationChange) onStationChange(preset.station);
     setErrors({});
   };
 
   const handleReset = () => {
+    const defaultSt = stations[0]?.name || 'Amlarem';
+    const defaultCode = stations[0]?.code || 0;
     setFormData({
-      station: stations[0]?.name || 'Amlarem',
-      stationCode: stations[0]?.code || 0,
-      month: 1
+      station: defaultSt,
+      stationCode: defaultCode,
+      month: currentMonthOption.actualMonth,
+      year: currentMonthOption.year,
+      relativeIndex: 1
     });
+    if (onStationChange) onStationChange(defaultSt);
     setErrors({});
   };
 
@@ -61,7 +92,9 @@ const FeatureForm = ({ stations, onSubmit, isLoading }) => {
     onSubmit({
       station: formData.station,
       stationCode: formData.stationCode,
-      month: formData.month
+      month: formData.month,
+      year: formData.year,
+      relativeIndex: formData.relativeIndex
     });
   };
 
@@ -99,20 +132,20 @@ const FeatureForm = ({ stations, onSubmit, isLoading }) => {
             {errors.station && <span className="error-text">{errors.station}</span>}
           </div>
 
-          {/* Month Selection Dropdown (January - December) */}
+          {/* Rolling Relative Month Selection Dropdown (Only 4 Relative Months) */}
           <div className="form-group">
             <label className="form-label">
-              Select Month
-              <span className="hint">January – December</span>
+              Select Target Month
+              <span className="hint">Rolling 4-Month Forecast</span>
             </label>
             <select
               className={`form-select ${errors.month ? 'error' : ''}`}
-              value={formData.month}
+              value={formData.relativeIndex}
               onChange={handleMonthChange}
             >
-              {MONTHS.map(m => (
-                <option key={m.value} value={m.value}>
-                  {m.label} (Month {m.value})
+              {rollingMonths.map(m => (
+                <option key={m.relativeIndex} value={m.relativeIndex}>
+                  {m.label}
                 </option>
               ))}
             </select>

@@ -2,7 +2,7 @@ import os
 import sys
 import json
 import re
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_file, send_from_directory
 
 # Compute base directories
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -119,9 +119,62 @@ def predict_lightweight(row_dict):
 
     raise RuntimeError("No valid ML model artifact available.")
 
+from datetime import datetime, timezone, timedelta
+
+def get_rolling_months_ist():
+    ist = timezone(timedelta(hours=5, minutes=30))
+    now = datetime.now(ist)
+    current_year = now.year
+    current_month_idx = now.month - 1
+
+    month_names = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+    ]
+
+    rolling = []
+    for offset in range(12):
+        total_idx = current_month_idx + offset
+        actual_month = (total_idx % 12) + 1
+        year = current_year + (total_idx // 12)
+        month_name = month_names[actual_month - 1]
+
+        label = f"{month_name} (Month {offset + 1})"
+
+        rolling.append({
+            'relative_index': offset + 1,
+            'actual_month': actual_month,
+            'year': year,
+            'month_name': month_name,
+            'label': label,
+            'is_default': (offset == 0)
+        })
+
+    return rolling
+
 @app.route('/')
 def home():
-    return render_template('index.html', stations=STATION_LIST)
+    rolling_months = get_rolling_months_ist()
+    return render_template('index.html', stations=STATION_LIST, rolling_months=rolling_months)
+
+@app.route('/water_wells_map')
+@app.route('/water_wells_map.html')
+@app.route('/static/water_wells_map.html')
+def serve_water_wells_map():
+    candidates = [
+        os.path.join(STATIC_DIR, 'water_wells_map.html'),
+        os.path.join(TEMPLATES_DIR, 'water_wells_map.html'),
+        os.path.join(BASE_DIR, 'water_wells_map.html'),
+        os.path.join(BASE_DIR, '..', 'water_wells_map.html')
+    ]
+    for candidate in candidates:
+        if os.path.exists(candidate):
+            return send_file(candidate, mimetype='text/html')
+    return "Map file not found", 404
+
+@app.route('/static/<path:filename>')
+def custom_static(filename):
+    return send_from_directory(STATIC_DIR, filename)
 
 @app.route('/api/stations', methods=['GET'])
 def get_stations():
@@ -136,8 +189,11 @@ def health():
         'stations_count': len(STATION_LIST)
     })
 
-@app.route('/predict', methods=['POST'])
+@app.route('/predict', methods=['GET', 'POST'])
 def predict():
+    if request.method == 'GET':
+        rolling_months = get_rolling_months_ist()
+        return render_template('index.html', stations=STATION_LIST, rolling_months=rolling_months)
     try:
         if request.is_json:
             data = request.get_json()
@@ -152,8 +208,25 @@ def predict():
         else:
             station_code = int(station_code)
 
-        year = int(data.get('year', 2024))
-        month = int(data.get('month', 6))
+        # Determine IST runtime date defaults & month mapping
+        ist = timezone(timedelta(hours=5, minutes=30))
+        now_ist = datetime.now(ist)
+
+        rel_month = data.get('relative_month') or data.get('relativeMonth')
+        month_raw = data.get('month')
+
+        if rel_month is not None and str(rel_month).strip() in [str(i) for i in range(1, 13)]:
+            rel_idx = int(rel_month) - 1
+            total_idx = (now_ist.month - 1) + rel_idx
+            month = (total_idx % 12) + 1
+            year = now_ist.year + (total_idx // 12)
+        elif month_raw is not None and str(month_raw).strip() != '':
+            month = int(month_raw)
+            year = int(data.get('year') or now_ist.year)
+        else:
+            month = now_ist.month
+            year = now_ist.year
+
         day = int(data.get('day', 15))
         hour = int(data.get('hour', 12))
 

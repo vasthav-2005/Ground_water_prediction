@@ -12,6 +12,10 @@
       "dest": "/groundwater_prediction/static/$1"
     },
     {
+      "src": "/water_wells_map.html",
+      "dest": "/groundwater_prediction/static/water_wells_map.html"
+    },
+    {
       "src": "/(.*)",
       "dest": "/groundwater_prediction/api/index.py"
     }
