@@ -2,13 +2,23 @@ import os
 import sys
 import json
 import re
-from flask import Flask, render_template, request, jsonify, send_file, send_from_directory
+from flask import Flask, render_template, request, jsonify, send_file, send_from_directory, Response
 
-# Compute base directories
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# Compute base directories with robust fallbacks for Vercel Serverless
+API_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(API_DIR)
+
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
+if not os.path.exists(TEMPLATES_DIR):
+    TEMPLATES_DIR = os.path.join(API_DIR, 'templates')
+
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
+if not os.path.exists(STATIC_DIR):
+    STATIC_DIR = os.path.join(API_DIR, 'static')
+
 MODEL_DIR = os.path.join(BASE_DIR, 'model')
+if not os.path.exists(MODEL_DIR):
+    MODEL_DIR = os.path.join(API_DIR, 'model')
 
 app = Flask(
     __name__,
@@ -152,16 +162,9 @@ def get_rolling_months_ist():
 
     return rolling
 
-@app.route('/')
-def home():
-    rolling_months = get_rolling_months_ist()
-    return render_template('index.html', stations=STATION_LIST, rolling_months=rolling_months)
-
-@app.route('/water_wells_map')
-@app.route('/water_wells_map.html')
-@app.route('/static/water_wells_map.html')
-def serve_water_wells_map():
+def get_map_html():
     candidates = [
+        os.path.join(API_DIR, 'water_wells_map.html'),
         os.path.join(STATIC_DIR, 'water_wells_map.html'),
         os.path.join(TEMPLATES_DIR, 'water_wells_map.html'),
         os.path.join(BASE_DIR, 'water_wells_map.html'),
@@ -169,7 +172,26 @@ def serve_water_wells_map():
     ]
     for candidate in candidates:
         if os.path.exists(candidate):
-            return send_file(candidate, mimetype='text/html')
+            try:
+                with open(candidate, 'r', encoding='utf-8') as f:
+                    return f.read()
+            except Exception as e:
+                print(f"Error reading {candidate}: {e}")
+    return ""
+
+@app.route('/')
+def home():
+    rolling_months = get_rolling_months_ist()
+    map_html = get_map_html()
+    return render_template('index.html', stations=STATION_LIST, rolling_months=rolling_months, map_html=map_html)
+
+@app.route('/water_wells_map')
+@app.route('/water_wells_map.html')
+@app.route('/static/water_wells_map.html')
+def serve_water_wells_map():
+    html_content = get_map_html()
+    if html_content:
+        return Response(html_content, mimetype='text/html')
     return "Map file not found", 404
 
 @app.route('/static/<path:filename>')
@@ -193,7 +215,7 @@ def health():
 def predict():
     if request.method == 'GET':
         rolling_months = get_rolling_months_ist()
-        return render_template('index.html', stations=STATION_LIST, rolling_months=rolling_months)
+        return render_template('index.html', stations=STATION_LIST, rolling_months=rolling_months, map_html=get_map_html())
     try:
         if request.is_json:
             data = request.get_json()
@@ -304,14 +326,16 @@ def predict():
             'index.html',
             stations=STATION_LIST,
             prediction=response,
-            form_data=data
+            form_data=data,
+            map_html=get_map_html(),
+            rolling_months=get_rolling_months_ist()
         )
 
     except Exception as e:
         err_msg = f"Prediction computation failed: {str(e)}"
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest' or request.is_json:
             return jsonify({'status': 'error', 'message': err_msg}), 400
-        return render_template('index.html', stations=STATION_LIST, error=err_msg)
+        return render_template('index.html', stations=STATION_LIST, error=err_msg, map_html=get_map_html(), rolling_months=get_rolling_months_ist())
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))

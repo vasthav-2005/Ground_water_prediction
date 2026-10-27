@@ -8,18 +8,6 @@
   ],
   "routes": [
     {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
-    },
-    {
-      "src": "/water_wells_map",
-      "dest": "/static/water_wells_map.html"
-    },
-    {
-      "src": "/water_wells_map.html",
-      "dest": "/static/water_wells_map.html"
-    },
-    {
       "src": "/(.*)",
       "dest": "/api/index.py"
     }
