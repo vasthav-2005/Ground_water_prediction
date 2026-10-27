@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_b14be9a237fae066d4b63effbfc3076c {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+<style>
+.custom-tooltip {
+    background: rgba(15, 23, 42, 0.95) !important;
+    border: 1px solid rgba(56, 189, 248, 0.4) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5) !important;
+    padding: 0 !important;
+    color: #f8fafc !important;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+}
+.leaflet-tooltip-left:before, .leaflet-tooltip-right:before {
+    border-right-color: rgba(15, 23, 42, 0.95) !important;
+    border-left-color: rgba(15, 23, 42, 0.95) !important;
+}
+.leaflet-popup-content-wrapper {
+    background: #0f172a !important;
+    color: #f8fafc !important;
+    border: 1px solid rgba(56, 189, 248, 0.4) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
+}
+.leaflet-popup-tip {
+    background: #0f172a !important;
+}
+.station-marker-circle {
+    transition: all 0.2s ease-in-out;
+}
+.station-marker-circle:hover {
+    stroke-width: 3.5px !important;
+    stroke: #ffffff !important;
+}
+</style>
+    
+<div style="
+    position: fixed;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    background: rgba(15, 23, 42, 0.92);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    backdrop-filter: blur(8px);
+    padding: 8px 18px;
+    border-radius: 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+    text-align: center;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    pointer-events: none;
+">
+    <div style="font-size: 13px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; justify-content: center; gap: 6px;">
+        <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#10b981; box-shadow:0 0 8px #10b981;"></span>
+        Meghalaya Telemetry Groundwater Monitoring Map
+    </div>
+    <div style="font-size: 11px; color: #94a3b8; margin-top: 1px;">
+        Hover over any telemetry station to inspect <b>Current</b> vs <b>Predicted</b> GWL values
+    </div>
+</div>
+    
+<div style="
+    position: fixed;
+    bottom: 25px;
+    right: 15px;
+    z-index: 1000;
+    background: rgba(15, 23, 42, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(8px);
+    padding: 10px 14px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: 11px;
+    color: #e2e8f0;
+    max-width: 220px;
+">
+    <div style="font-weight: 700; color: #38bdf8; margin-bottom: 6px; font-size: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px;">
+        💧 GWL Status Key
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+        <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#10b981;"></span>
+        <span>Optimal / Normal (&le; 35m)</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+        <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#f59e0b;"></span>
+        <span>Moderately Deep (35 - 60m)</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#ef4444;"></span>
+        <span>Shallow / Critical Runoff (&lt; 5m)</span>
+    </div>
+</div>
+    
+            <div class="folium-map" id="map_b14be9a237fae066d4b63effbfc3076c" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_b14be9a237fae066d4b63effbfc3076c = L.map(
+                "map_b14be9a237fae066d4b63effbfc3076c",
+                {
+                    center: [25.557842746666665, 91.29792530888888],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 8,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_6ee43cfb39dd07508730cc22ab37f299 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_6ee43cfb39dd07508730cc22ab37f299.addTo(map_b14be9a237fae066d4b63effbfc3076c);
+        
+    
+            var circle_marker_d97d25de097a314c1aec38730e9fe3fe = L.circleMarker(
+                [25.28527778, 92.10305556],
+                {"bubblingMouseEvents": true, "color": "#ffffff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#f59e0b", "fillOpacity": 0.88, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2}
+            ).addTo(map_b14be9a237fae066d4b63effbfc3076c);
+        
+    
+        var popup_eb4777e07cbf43bebcdc646e5875829c = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_40b7f9d2b685a096f8a732d3ea5a938c = $(`<div id="html_40b7f9d2b685a096f8a732d3ea5a938c" style="width: 100.0%; height: 100.0%;">     <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">         <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">             <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">                 <span>📍</span> Amlarem             </div>             <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">                 Code: 0             </span>         </div>                  <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">West Jaintia Hills</span></div>          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>                 <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">47.27 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>                 <span style="font-size: 13px; font-weight: 700; color: #34d399;">47.23 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">                 <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>                 <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">-0.04 m</span>             </div>         </div>          <div style="margin-bottom: 6px;">             <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.45);">                 Moderately Deep Ground Water             </span>         </div>          <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">             <span>Depth to water table</span>             <span>Sync: 2025-05-21 18:00</span>         </div>     </div>     </div>`)[0];
+                popup_eb4777e07cbf43bebcdc646e5875829c.setContent(html_40b7f9d2b685a096f8a732d3ea5a938c);
+            
+        
+
+        circle_marker_d97d25de097a314c1aec38730e9fe3fe.bindPopup(popup_eb4777e07cbf43bebcdc646e5875829c)
+        ;
+
+        
+    
+    
+            circle_marker_d97d25de097a314c1aec38730e9fe3fe.bindTooltip(
+                `<div>
+                     
+    <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">
+            <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">
+                <span>📍</span> Amlarem
+            </div>
+            <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">
+                Code: 0
+            </span>
+        </div>
+        
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">West Jaintia Hills</span></div>
+
+        <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>
+                <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">47.27 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>
+                <span style="font-size: 13px; font-weight: 700; color: #34d399;">47.23 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">
+                <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>
+                <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">-0.04 m</span>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 6px;">
+            <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.45);">
+                Moderately Deep Ground Water
+            </span>
+        </div>
+
+        <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">
+            <span>Depth to water table</span>
+            <span>Sync: 2025-05-21 18:00</span>
+        </div>
+    </div>
+    
+                 </div>`,
+                {
+  "className": "custom-tooltip",
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_f15c555a601181fde4173c70b1347410 = L.circleMarker(
+                [25.20103333, 90.31028333],
+                {"bubblingMouseEvents": true, "color": "#ffffff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ef4444", "fillOpacity": 0.88, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2}
+            ).addTo(map_b14be9a237fae066d4b63effbfc3076c);
+        
+    
+        var popup_d8fd9ce6686921731dc1bc377cbfc799 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_c1eb2cb9f544d59f73289aa5f7ca5957 = $(`<div id="html_c1eb2cb9f544d59f73289aa5f7ca5957" style="width: 100.0%; height: 100.0%;">     <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">         <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">             <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">                 <span>📍</span> Barengapara             </div>             <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">                 Code: 1             </span>         </div>                  <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">west Garo Hills</span></div>          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>                 <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">4.46 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>                 <span style="font-size: 13px; font-weight: 700; color: #34d399;">4.51 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">                 <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>                 <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">+0.05 m</span>             </div>         </div>          <div style="margin-bottom: 6px;">             <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.45);">                 Shallow Water Table (High Surface Runoff)             </span>         </div>          <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">             <span>Depth to water table</span>             <span>Sync: 2025-05-21 18:00</span>         </div>     </div>     </div>`)[0];
+                popup_d8fd9ce6686921731dc1bc377cbfc799.setContent(html_c1eb2cb9f544d59f73289aa5f7ca5957);
+            
+        
+
+        circle_marker_f15c555a601181fde4173c70b1347410.bindPopup(popup_d8fd9ce6686921731dc1bc377cbfc799)
+        ;
+
+        
+    
+    
+            circle_marker_f15c555a601181fde4173c70b1347410.bindTooltip(
+                `<div>
+                     
+    <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">
+            <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">
+                <span>📍</span> Barengapara
+            </div>
+            <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">
+                Code: 1
+            </span>
+        </div>
+        
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">west Garo Hills</span></div>
+
+        <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>
+                <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">4.46 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>
+                <span style="font-size: 13px; font-weight: 700; color: #34d399;">4.51 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">
+                <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>
+                <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">+0.05 m</span>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 6px;">
+            <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.45);">
+                Shallow Water Table (High Surface Runoff)
+            </span>
+        </div>
+
+        <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">
+            <span>Depth to water table</span>
+            <span>Sync: 2025-05-21 18:00</span>
+        </div>
+    </div>
+    
+                 </div>`,
+                {
+  "className": "custom-tooltip",
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_4da0148352a37bb757392e13cdf05b05 = L.circleMarker(
+                [26.0775, 91.87555556],
+                {"bubblingMouseEvents": true, "color": "#ffffff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#f59e0b", "fillOpacity": 0.88, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2}
+            ).addTo(map_b14be9a237fae066d4b63effbfc3076c);
+        
+    
+        var popup_61c46edd1927754ab7d7fcb1a2e4275c = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_6e5c096d36e1daa78c6a4033ea4b92fc = $(`<div id="html_6e5c096d36e1daa78c6a4033ea4b92fc" style="width: 100.0%; height: 100.0%;">     <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">         <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">             <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">                 <span>📍</span> Byrnihat             </div>             <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">                 Code: 2             </span>         </div>                  <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">RI BHOI</span></div>          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>                 <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">45.99 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>                 <span style="font-size: 13px; font-weight: 700; color: #34d399;">46.26 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">                 <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>                 <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">+0.26 m</span>             </div>         </div>          <div style="margin-bottom: 6px;">             <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.45);">                 Moderately Deep Ground Water             </span>         </div>          <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">             <span>Depth to water table</span>             <span>Sync: 2025-05-20 12:00</span>         </div>     </div>     </div>`)[0];
+                popup_61c46edd1927754ab7d7fcb1a2e4275c.setContent(html_6e5c096d36e1daa78c6a4033ea4b92fc);
+            
+        
+
+        circle_marker_4da0148352a37bb757392e13cdf05b05.bindPopup(popup_61c46edd1927754ab7d7fcb1a2e4275c)
+        ;
+
+        
+    
+    
+            circle_marker_4da0148352a37bb757392e13cdf05b05.bindTooltip(
+                `<div>
+                     
+    <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">
+            <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">
+                <span>📍</span> Byrnihat
+            </div>
+            <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">
+                Code: 2
+            </span>
+        </div>
+        
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">RI BHOI</span></div>
+
+        <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>
+                <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">45.99 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>
+                <span style="font-size: 13px; font-weight: 700; color: #34d399;">46.26 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">
+                <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>
+                <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">+0.26 m</span>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 6px;">
+            <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.45);">
+                Moderately Deep Ground Water
+            </span>
+        </div>
+
+        <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">
+            <span>Depth to water table</span>
+            <span>Sync: 2025-05-20 12:00</span>
+        </div>
+    </div>
+    
+                 </div>`,
+                {
+  "className": "custom-tooltip",
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_aa08d6d072e9b2adb5f75a10f9771e71 = L.circleMarker(
+                [25.93819167, 90.72739167],
+                {"bubblingMouseEvents": true, "color": "#ffffff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ef4444", "fillOpacity": 0.88, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2}
+            ).addTo(map_b14be9a237fae066d4b63effbfc3076c);
+        
+    
+        var popup_88576ad5d162576626d94040134d8589 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_39a73e0b494ce909b23270a3890791e5 = $(`<div id="html_39a73e0b494ce909b23270a3890791e5" style="width: 100.0%; height: 100.0%;">     <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">         <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">             <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">                 <span>📍</span> Damas_1             </div>             <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">                 Code: 3             </span>         </div>                  <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">North Garo Hills</span></div>          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>                 <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">4.40 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>                 <span style="font-size: 13px; font-weight: 700; color: #34d399;">4.40 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">                 <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>                 <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">-0.01 m</span>             </div>         </div>          <div style="margin-bottom: 6px;">             <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.45);">                 Shallow Water Table (High Surface Runoff)             </span>         </div>          <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">             <span>Depth to water table</span>             <span>Sync: 2024-11-21 12:00</span>         </div>     </div>     </div>`)[0];
+                popup_88576ad5d162576626d94040134d8589.setContent(html_39a73e0b494ce909b23270a3890791e5);
+            
+        
+
+        circle_marker_aa08d6d072e9b2adb5f75a10f9771e71.bindPopup(popup_88576ad5d162576626d94040134d8589)
+        ;
+
+        
+    
+    
+            circle_marker_aa08d6d072e9b2adb5f75a10f9771e71.bindTooltip(
+                `<div>
+                     
+    <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">
+            <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">
+                <span>📍</span> Damas_1
+            </div>
+            <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">
+                Code: 3
+            </span>
+        </div>
+        
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">North Garo Hills</span></div>
+
+        <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>
+                <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">4.40 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>
+                <span style="font-size: 13px; font-weight: 700; color: #34d399;">4.40 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">
+                <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>
+                <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">-0.01 m</span>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 6px;">
+            <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.45);">
+                Shallow Water Table (High Surface Runoff)
+            </span>
+        </div>
+
+        <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">
+            <span>Depth to water table</span>
+            <span>Sync: 2024-11-21 12:00</span>
+        </div>
+    </div>
+    
+                 </div>`,
+                {
+  "className": "custom-tooltip",
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_fc78330a4b61242eea3fb517ac49fe77 = L.circleMarker(
+                [25.43638889, 92.19388889],
+                {"bubblingMouseEvents": true, "color": "#ffffff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#10b981", "fillOpacity": 0.88, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2}
+            ).addTo(map_b14be9a237fae066d4b63effbfc3076c);
+        
+    
+        var popup_96b9101444a77c5fd08d9f61501247d1 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_8dd93b08688ba113a6d196da25fd1297 = $(`<div id="html_8dd93b08688ba113a6d196da25fd1297" style="width: 100.0%; height: 100.0%;">     <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">         <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">             <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">                 <span>📍</span> Jowai             </div>             <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">                 Code: 4             </span>         </div>                  <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">West Jaintia Hills</span></div>          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>                 <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">6.61 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>                 <span style="font-size: 13px; font-weight: 700; color: #34d399;">6.56 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">                 <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>                 <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">-0.05 m</span>             </div>         </div>          <div style="margin-bottom: 6px;">             <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.45);">                 Optimal / Normal Range             </span>         </div>          <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">             <span>Depth to water table</span>             <span>Sync: 2025-05-22 06:00</span>         </div>     </div>     </div>`)[0];
+                popup_96b9101444a77c5fd08d9f61501247d1.setContent(html_8dd93b08688ba113a6d196da25fd1297);
+            
+        
+
+        circle_marker_fc78330a4b61242eea3fb517ac49fe77.bindPopup(popup_96b9101444a77c5fd08d9f61501247d1)
+        ;
+
+        
+    
+    
+            circle_marker_fc78330a4b61242eea3fb517ac49fe77.bindTooltip(
+                `<div>
+                     
+    <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">
+            <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">
+                <span>📍</span> Jowai
+            </div>
+            <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">
+                Code: 4
+            </span>
+        </div>
+        
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">West Jaintia Hills</span></div>
+
+        <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>
+                <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">6.61 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>
+                <span style="font-size: 13px; font-weight: 700; color: #34d399;">6.56 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">
+                <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>
+                <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">-0.05 m</span>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 6px;">
+            <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.45);">
+                Optimal / Normal Range
+            </span>
+        </div>
+
+        <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">
+            <span>Depth to water table</span>
+            <span>Sync: 2025-05-22 06:00</span>
+        </div>
+    </div>
+    
+                 </div>`,
+                {
+  "className": "custom-tooltip",
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_8516e6263ff3b11f6dc6751d1e9521d5 = L.circleMarker(
+                [25.34472222, 92.36611111],
+                {"bubblingMouseEvents": true, "color": "#ffffff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#10b981", "fillOpacity": 0.88, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2}
+            ).addTo(map_b14be9a237fae066d4b63effbfc3076c);
+        
+    
+        var popup_a23eddc37805bb694d5dc5816df3efed = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_9bb62c829b9f4d68af495c2f9ded2a50 = $(`<div id="html_9bb62c829b9f4d68af495c2f9ded2a50" style="width: 100.0%; height: 100.0%;">     <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">         <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">             <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">                 <span>📍</span> Khliehriat             </div>             <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">                 Code: 5             </span>         </div>                  <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">East Jaintia Hills</span></div>          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>                 <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">23.33 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>                 <span style="font-size: 13px; font-weight: 700; color: #34d399;">23.15 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">                 <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>                 <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">-0.18 m</span>             </div>         </div>          <div style="margin-bottom: 6px;">             <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.45);">                 Optimal / Normal Range             </span>         </div>          <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">             <span>Depth to water table</span>             <span>Sync: 2025-05-21 18:00</span>         </div>     </div>     </div>`)[0];
+                popup_a23eddc37805bb694d5dc5816df3efed.setContent(html_9bb62c829b9f4d68af495c2f9ded2a50);
+            
+        
+
+        circle_marker_8516e6263ff3b11f6dc6751d1e9521d5.bindPopup(popup_a23eddc37805bb694d5dc5816df3efed)
+        ;
+
+        
+    
+    
+            circle_marker_8516e6263ff3b11f6dc6751d1e9521d5.bindTooltip(
+                `<div>
+                     
+    <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">
+            <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">
+                <span>📍</span> Khliehriat
+            </div>
+            <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">
+                Code: 5
+            </span>
+        </div>
+        
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">East Jaintia Hills</span></div>
+
+        <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>
+                <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">23.33 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>
+                <span style="font-size: 13px; font-weight: 700; color: #34d399;">23.15 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">
+                <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>
+                <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">-0.18 m</span>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 6px;">
+            <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.45);">
+                Optimal / Normal Range
+            </span>
+        </div>
+
+        <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">
+            <span>Depth to water table</span>
+            <span>Sync: 2025-05-21 18:00</span>
+        </div>
+    </div>
+    
+                 </div>`,
+                {
+  "className": "custom-tooltip",
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_aef3c57f7853ce667799ceb23e3cf02b = L.circleMarker(
+                [25.34333333, 92.45861111],
+                {"bubblingMouseEvents": true, "color": "#ffffff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#10b981", "fillOpacity": 0.88, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2}
+            ).addTo(map_b14be9a237fae066d4b63effbfc3076c);
+        
+    
+        var popup_c20f2a1831377c83c4c1223460039d95 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_61113be7811f027f7215051c9dfbcb43 = $(`<div id="html_61113be7811f027f7215051c9dfbcb43" style="width: 100.0%; height: 100.0%;">     <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">         <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">             <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">                 <span>📍</span> Latyrke             </div>             <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">                 Code: 6             </span>         </div>                  <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">East Khasi Hills</span></div>          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>                 <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">21.91 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>                 <span style="font-size: 13px; font-weight: 700; color: #34d399;">21.04 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">                 <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>                 <span style="font-size: 11px; font-weight: 600; color: #10b981;">-0.88 m</span>             </div>         </div>          <div style="margin-bottom: 6px;">             <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.45);">                 Optimal / Normal Range             </span>         </div>          <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">             <span>Depth to water table</span>             <span>Sync: 2025-05-21 18:00</span>         </div>     </div>     </div>`)[0];
+                popup_c20f2a1831377c83c4c1223460039d95.setContent(html_61113be7811f027f7215051c9dfbcb43);
+            
+        
+
+        circle_marker_aef3c57f7853ce667799ceb23e3cf02b.bindPopup(popup_c20f2a1831377c83c4c1223460039d95)
+        ;
+
+        
+    
+    
+            circle_marker_aef3c57f7853ce667799ceb23e3cf02b.bindTooltip(
+                `<div>
+                     
+    <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">
+            <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">
+                <span>📍</span> Latyrke
+            </div>
+            <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">
+                Code: 6
+            </span>
+        </div>
+        
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">East Khasi Hills</span></div>
+
+        <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>
+                <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">21.91 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>
+                <span style="font-size: 13px; font-weight: 700; color: #34d399;">21.04 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">
+                <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>
+                <span style="font-size: 11px; font-weight: 600; color: #10b981;">-0.88 m</span>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 6px;">
+            <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.45);">
+                Optimal / Normal Range
+            </span>
+        </div>
+
+        <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">
+            <span>Depth to water table</span>
+            <span>Sync: 2025-05-21 18:00</span>
+        </div>
+    </div>
+    
+                 </div>`,
+                {
+  "className": "custom-tooltip",
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_111d6aca934403f56fb136424d07107a = L.circleMarker(
+                [25.5586, 91.62575],
+                {"bubblingMouseEvents": true, "color": "#ffffff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ef4444", "fillOpacity": 0.88, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2}
+            ).addTo(map_b14be9a237fae066d4b63effbfc3076c);
+        
+    
+        var popup_a0e80f587c3eda3dedc5a24f15deef83 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_c0e5af067bb62b322b2070791fc1dc60 = $(`<div id="html_c0e5af067bb62b322b2070791fc1dc60" style="width: 100.0%; height: 100.0%;">     <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">         <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">             <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">                 <span>📍</span> Mairang             </div>             <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">                 Code: 7             </span>         </div>                  <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">West Khasi Hills</span></div>          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>                 <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">-6.07 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>                 <span style="font-size: 13px; font-weight: 700; color: #34d399;">-6.54 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">                 <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>                 <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">-0.47 m</span>             </div>         </div>          <div style="margin-bottom: 6px;">             <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.45);">                 Shallow Water Table (High Surface Runoff)             </span>         </div>          <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">             <span>Depth to water table</span>             <span>Sync: 2025-05-02 12:00</span>         </div>     </div>     </div>`)[0];
+                popup_a0e80f587c3eda3dedc5a24f15deef83.setContent(html_c0e5af067bb62b322b2070791fc1dc60);
+            
+        
+
+        circle_marker_111d6aca934403f56fb136424d07107a.bindPopup(popup_a0e80f587c3eda3dedc5a24f15deef83)
+        ;
+
+        
+    
+    
+            circle_marker_111d6aca934403f56fb136424d07107a.bindTooltip(
+                `<div>
+                     
+    <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">
+            <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">
+                <span>📍</span> Mairang
+            </div>
+            <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">
+                Code: 7
+            </span>
+        </div>
+        
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">West Khasi Hills</span></div>
+
+        <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>
+                <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">-6.07 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>
+                <span style="font-size: 13px; font-weight: 700; color: #34d399;">-6.54 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">
+                <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>
+                <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">-0.47 m</span>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 6px;">
+            <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.45);">
+                Shallow Water Table (High Surface Runoff)
+            </span>
+        </div>
+
+        <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">
+            <span>Depth to water table</span>
+            <span>Sync: 2025-05-02 12:00</span>
+        </div>
+    </div>
+    
+                 </div>`,
+                {
+  "className": "custom-tooltip",
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_19665953f9f3062039bab29c75ad970f = L.circleMarker(
+                [25.37164167, 91.48180833],
+                {"bubblingMouseEvents": true, "color": "#ffffff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#10b981", "fillOpacity": 0.88, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2}
+            ).addTo(map_b14be9a237fae066d4b63effbfc3076c);
+        
+    
+        var popup_dac3219666201fdde176b01623f47b42 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_5970da677516784428423f3c9e4ab7ec = $(`<div id="html_5970da677516784428423f3c9e4ab7ec" style="width: 100.0%; height: 100.0%;">     <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">         <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">             <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">                 <span>📍</span> Mawkyrwat_1             </div>             <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">                 Code: 8             </span>         </div>                  <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">South West Khasi Hills</span></div>          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>                 <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">6.45 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>                 <span style="font-size: 13px; font-weight: 700; color: #34d399;">6.00 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">                 <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>                 <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">-0.45 m</span>             </div>         </div>          <div style="margin-bottom: 6px;">             <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.45);">                 Optimal / Normal Range             </span>         </div>          <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">             <span>Depth to water table</span>             <span>Sync: 2025-05-22 11:35</span>         </div>     </div>     </div>`)[0];
+                popup_dac3219666201fdde176b01623f47b42.setContent(html_5970da677516784428423f3c9e4ab7ec);
+            
+        
+
+        circle_marker_19665953f9f3062039bab29c75ad970f.bindPopup(popup_dac3219666201fdde176b01623f47b42)
+        ;
+
+        
+    
+    
+            circle_marker_19665953f9f3062039bab29c75ad970f.bindTooltip(
+                `<div>
+                     
+    <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">
+            <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">
+                <span>📍</span> Mawkyrwat_1
+            </div>
+            <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">
+                Code: 8
+            </span>
+        </div>
+        
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">South West Khasi Hills</span></div>
+
+        <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>
+                <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">6.45 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>
+                <span style="font-size: 13px; font-weight: 700; color: #34d399;">6.00 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">
+                <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>
+                <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">-0.45 m</span>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 6px;">
+            <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.45);">
+                Optimal / Normal Range
+            </span>
+        </div>
+
+        <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">
+            <span>Depth to water table</span>
+            <span>Sync: 2025-05-22 11:35</span>
+        </div>
+    </div>
+    
+                 </div>`,
+                {
+  "className": "custom-tooltip",
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_e29a23379df460e8104dc2302a94071f = L.circleMarker(
+                [25.54493056, 91.23868056],
+                {"bubblingMouseEvents": true, "color": "#ffffff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ef4444", "fillOpacity": 0.88, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2}
+            ).addTo(map_b14be9a237fae066d4b63effbfc3076c);
+        
+    
+        var popup_56ad9cf96e3291cd1943ecef03bbf9bd = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_7588f373d136a55246903508d945cd0e = $(`<div id="html_7588f373d136a55246903508d945cd0e" style="width: 100.0%; height: 100.0%;">     <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">         <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">             <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">                 <span>📍</span> Nongstoin_1             </div>             <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">                 Code: 9             </span>         </div>                  <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">West Khasi Hills</span></div>          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>                 <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">3.32 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>                 <span style="font-size: 13px; font-weight: 700; color: #34d399;">3.28 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">                 <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>                 <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">-0.04 m</span>             </div>         </div>          <div style="margin-bottom: 6px;">             <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.45);">                 Shallow Water Table (High Surface Runoff)             </span>         </div>          <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">             <span>Depth to water table</span>             <span>Sync: 2025-05-22 12:00</span>         </div>     </div>     </div>`)[0];
+                popup_56ad9cf96e3291cd1943ecef03bbf9bd.setContent(html_7588f373d136a55246903508d945cd0e);
+            
+        
+
+        circle_marker_e29a23379df460e8104dc2302a94071f.bindPopup(popup_56ad9cf96e3291cd1943ecef03bbf9bd)
+        ;
+
+        
+    
+    
+            circle_marker_e29a23379df460e8104dc2302a94071f.bindTooltip(
+                `<div>
+                     
+    <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">
+            <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">
+                <span>📍</span> Nongstoin_1
+            </div>
+            <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">
+                Code: 9
+            </span>
+        </div>
+        
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">West Khasi Hills</span></div>
+
+        <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>
+                <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">3.32 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>
+                <span style="font-size: 13px; font-weight: 700; color: #34d399;">3.28 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">
+                <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>
+                <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">-0.04 m</span>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 6px;">
+            <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.45);">
+                Shallow Water Table (High Surface Runoff)
+            </span>
+        </div>
+
+        <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">
+            <span>Depth to water table</span>
+            <span>Sync: 2025-05-22 12:00</span>
+        </div>
+    </div>
+    
+                 </div>`,
+                {
+  "className": "custom-tooltip",
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_378a2d22801ef6188f23570330b3eac1 = L.circleMarker(
+                [25.20225, 91.31891667],
+                {"bubblingMouseEvents": true, "color": "#ffffff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ef4444", "fillOpacity": 0.88, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2}
+            ).addTo(map_b14be9a237fae066d4b63effbfc3076c);
+        
+    
+        var popup_685fb18c49a1628fde0e5d70f31ae0b1 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_7864efca302f8f81c1530b0c5eefa41a = $(`<div id="html_7864efca302f8f81c1530b0c5eefa41a" style="width: 100.0%; height: 100.0%;">     <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">         <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">             <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">                 <span>📍</span> Panchiring             </div>             <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">                 Code: 10             </span>         </div>                  <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">South West Khasi Hills</span></div>          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>                 <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">3.67 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>                 <span style="font-size: 13px; font-weight: 700; color: #34d399;">3.68 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">                 <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>                 <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">+0.01 m</span>             </div>         </div>          <div style="margin-bottom: 6px;">             <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.45);">                 Shallow Water Table (High Surface Runoff)             </span>         </div>          <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">             <span>Depth to water table</span>             <span>Sync: 2025-05-22 06:00</span>         </div>     </div>     </div>`)[0];
+                popup_685fb18c49a1628fde0e5d70f31ae0b1.setContent(html_7864efca302f8f81c1530b0c5eefa41a);
+            
+        
+
+        circle_marker_378a2d22801ef6188f23570330b3eac1.bindPopup(popup_685fb18c49a1628fde0e5d70f31ae0b1)
+        ;
+
+        
+    
+    
+            circle_marker_378a2d22801ef6188f23570330b3eac1.bindTooltip(
+                `<div>
+                     
+    <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">
+            <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">
+                <span>📍</span> Panchiring
+            </div>
+            <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">
+                Code: 10
+            </span>
+        </div>
+        
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">South West Khasi Hills</span></div>
+
+        <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>
+                <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">3.67 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>
+                <span style="font-size: 13px; font-weight: 700; color: #34d399;">3.68 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">
+                <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>
+                <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">+0.01 m</span>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 6px;">
+            <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.45);">
+                Shallow Water Table (High Surface Runoff)
+            </span>
+        </div>
+
+        <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">
+            <span>Depth to water table</span>
+            <span>Sync: 2025-05-22 06:00</span>
+        </div>
+    </div>
+    
+                 </div>`,
+                {
+  "className": "custom-tooltip",
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_dec7d312b4eb4eb0f6e53bc49cfda61a = L.circleMarker(
+                [25.87719444, 90.02971944],
+                {"bubblingMouseEvents": true, "color": "#ffffff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ef4444", "fillOpacity": 0.88, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2}
+            ).addTo(map_b14be9a237fae066d4b63effbfc3076c);
+        
+    
+        var popup_540a60624ca678ae35048a1ebccbe44d = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_587a356d429ab156929f82c337c50c45 = $(`<div id="html_587a356d429ab156929f82c337c50c45" style="width: 100.0%; height: 100.0%;">     <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">         <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">             <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">                 <span>📍</span> Phulbari_1             </div>             <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">                 Code: 11             </span>         </div>                  <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">west Garo Hills</span></div>          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>                 <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">0.81 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>                 <span style="font-size: 13px; font-weight: 700; color: #34d399;">0.89 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">                 <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>                 <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">+0.08 m</span>             </div>         </div>          <div style="margin-bottom: 6px;">             <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.45);">                 Shallow Water Table (High Surface Runoff)             </span>         </div>          <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">             <span>Depth to water table</span>             <span>Sync: 2025-05-21 12:00</span>         </div>     </div>     </div>`)[0];
+                popup_540a60624ca678ae35048a1ebccbe44d.setContent(html_587a356d429ab156929f82c337c50c45);
+            
+        
+
+        circle_marker_dec7d312b4eb4eb0f6e53bc49cfda61a.bindPopup(popup_540a60624ca678ae35048a1ebccbe44d)
+        ;
+
+        
+    
+    
+            circle_marker_dec7d312b4eb4eb0f6e53bc49cfda61a.bindTooltip(
+                `<div>
+                     
+    <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">
+            <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">
+                <span>📍</span> Phulbari_1
+            </div>
+            <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">
+                Code: 11
+            </span>
+        </div>
+        
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">west Garo Hills</span></div>
+
+        <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>
+                <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">0.81 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>
+                <span style="font-size: 13px; font-weight: 700; color: #34d399;">0.89 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">
+                <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>
+                <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">+0.08 m</span>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 6px;">
+            <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.45);">
+                Shallow Water Table (High Surface Runoff)
+            </span>
+        </div>
+
+        <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">
+            <span>Depth to water table</span>
+            <span>Sync: 2025-05-21 12:00</span>
+        </div>
+    </div>
+    
+                 </div>`,
+                {
+  "className": "custom-tooltip",
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_d1bed34ade8af860bc102787c2ca2b51 = L.circleMarker(
+                [25.61017222, 90.73123889],
+                {"bubblingMouseEvents": true, "color": "#ffffff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ef4444", "fillOpacity": 0.88, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2}
+            ).addTo(map_b14be9a237fae066d4b63effbfc3076c);
+        
+    
+        var popup_e4e25e9d8fae8a1b553884ebc26cd2d3 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_e793256b09cd5a5a2f7055cf1d684837 = $(`<div id="html_e793256b09cd5a5a2f7055cf1d684837" style="width: 100.0%; height: 100.0%;">     <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">         <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">             <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">                 <span>📍</span> Rongjeng_1             </div>             <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">                 Code: 12             </span>         </div>                  <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">East Garo Hills</span></div>          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>                 <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">1.51 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>                 <span style="font-size: 13px; font-weight: 700; color: #34d399;">1.46 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">                 <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>                 <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">-0.05 m</span>             </div>         </div>          <div style="margin-bottom: 6px;">             <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.45);">                 Shallow Water Table (High Surface Runoff)             </span>         </div>          <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">             <span>Depth to water table</span>             <span>Sync: 2025-05-22 00:00</span>         </div>     </div>     </div>`)[0];
+                popup_e4e25e9d8fae8a1b553884ebc26cd2d3.setContent(html_e793256b09cd5a5a2f7055cf1d684837);
+            
+        
+
+        circle_marker_d1bed34ade8af860bc102787c2ca2b51.bindPopup(popup_e4e25e9d8fae8a1b553884ebc26cd2d3)
+        ;
+
+        
+    
+    
+            circle_marker_d1bed34ade8af860bc102787c2ca2b51.bindTooltip(
+                `<div>
+                     
+    <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">
+            <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">
+                <span>📍</span> Rongjeng_1
+            </div>
+            <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">
+                Code: 12
+            </span>
+        </div>
+        
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">East Garo Hills</span></div>
+
+        <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>
+                <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">1.51 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>
+                <span style="font-size: 13px; font-weight: 700; color: #34d399;">1.46 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">
+                <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>
+                <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">-0.05 m</span>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 6px;">
+            <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.45);">
+                Shallow Water Table (High Surface Runoff)
+            </span>
+        </div>
+
+        <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">
+            <span>Depth to water table</span>
+            <span>Sync: 2025-05-22 00:00</span>
+        </div>
+    </div>
+    
+                 </div>`,
+                {
+  "className": "custom-tooltip",
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_a13f9ab38b4e8dbf797193ebad1dcd64 = L.circleMarker(
+                [25.88444444, 91.88222222],
+                {"bubblingMouseEvents": true, "color": "#ffffff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ef4444", "fillOpacity": 0.88, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2}
+            ).addTo(map_b14be9a237fae066d4b63effbfc3076c);
+        
+    
+        var popup_d04cfdfba1b379893211f6ff095145af = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_d7c7a62dad7aa1b328367f267dd7124e = $(`<div id="html_d7c7a62dad7aa1b328367f267dd7124e" style="width: 100.0%; height: 100.0%;">     <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">         <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">             <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">                 <span>📍</span> Saiden             </div>             <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">                 Code: 13             </span>         </div>                  <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">RI BHOI</span></div>          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>                 <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">1.99 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>                 <span style="font-size: 13px; font-weight: 700; color: #34d399;">2.05 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">                 <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>                 <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">+0.06 m</span>             </div>         </div>          <div style="margin-bottom: 6px;">             <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.45);">                 Shallow Water Table (High Surface Runoff)             </span>         </div>          <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">             <span>Depth to water table</span>             <span>Sync: 2025-05-21 12:00</span>         </div>     </div>     </div>`)[0];
+                popup_d04cfdfba1b379893211f6ff095145af.setContent(html_d7c7a62dad7aa1b328367f267dd7124e);
+            
+        
+
+        circle_marker_a13f9ab38b4e8dbf797193ebad1dcd64.bindPopup(popup_d04cfdfba1b379893211f6ff095145af)
+        ;
+
+        
+    
+    
+            circle_marker_a13f9ab38b4e8dbf797193ebad1dcd64.bindTooltip(
+                `<div>
+                     
+    <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">
+            <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">
+                <span>📍</span> Saiden
+            </div>
+            <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">
+                Code: 13
+            </span>
+        </div>
+        
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">RI BHOI</span></div>
+
+        <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>
+                <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">1.99 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>
+                <span style="font-size: 13px; font-weight: 700; color: #34d399;">2.05 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">
+                <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>
+                <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">+0.06 m</span>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 6px;">
+            <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.45);">
+                Shallow Water Table (High Surface Runoff)
+            </span>
+        </div>
+
+        <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">
+            <span>Depth to water table</span>
+            <span>Sync: 2025-05-21 12:00</span>
+        </div>
+    </div>
+    
+                 </div>`,
+                {
+  "className": "custom-tooltip",
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_c171213808da62758d7b1da8be76af9a = L.circleMarker(
+                [25.58277778, 91.88694444],
+                {"bubblingMouseEvents": true, "color": "#ffffff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ef4444", "fillOpacity": 0.88, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2}
+            ).addTo(map_b14be9a237fae066d4b63effbfc3076c);
+        
+    
+        var popup_67bbf95253b2c435d0d3958212c12ac0 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_62a88256f8734494f31058f62f3c3dd5 = $(`<div id="html_62a88256f8734494f31058f62f3c3dd5" style="width: 100.0%; height: 100.0%;">     <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">         <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">             <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">                 <span>📍</span> Shillong             </div>             <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">                 Code: 14             </span>         </div>                  <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">East Khasi Hills</span></div>          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>                 <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">2.02 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>                 <span style="font-size: 13px; font-weight: 700; color: #34d399;">2.44 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">                 <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>                 <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">+0.43 m</span>             </div>         </div>          <div style="margin-bottom: 6px;">             <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.45);">                 Shallow Water Table (High Surface Runoff)             </span>         </div>          <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">             <span>Depth to water table</span>             <span>Sync: 2025-02-03 18:00</span>         </div>     </div>     </div>`)[0];
+                popup_67bbf95253b2c435d0d3958212c12ac0.setContent(html_62a88256f8734494f31058f62f3c3dd5);
+            
+        
+
+        circle_marker_c171213808da62758d7b1da8be76af9a.bindPopup(popup_67bbf95253b2c435d0d3958212c12ac0)
+        ;
+
+        
+    
+    
+            circle_marker_c171213808da62758d7b1da8be76af9a.bindTooltip(
+                `<div>
+                     
+    <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">
+            <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">
+                <span>📍</span> Shillong
+            </div>
+            <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">
+                Code: 14
+            </span>
+        </div>
+        
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">East Khasi Hills</span></div>
+
+        <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>
+                <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">2.02 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>
+                <span style="font-size: 13px; font-weight: 700; color: #34d399;">2.44 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">
+                <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>
+                <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">+0.43 m</span>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 6px;">
+            <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.45);">
+                Shallow Water Table (High Surface Runoff)
+            </span>
+        </div>
+
+        <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">
+            <span>Depth to water table</span>
+            <span>Sync: 2025-02-03 18:00</span>
+        </div>
+    </div>
+    
+                 </div>`,
+                {
+  "className": "custom-tooltip",
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_bc6e9c3e3727234555f47db03232470f = L.circleMarker(
+                [25.8981, 90.64253333],
+                {"bubblingMouseEvents": true, "color": "#ffffff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#10b981", "fillOpacity": 0.88, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2}
+            ).addTo(map_b14be9a237fae066d4b63effbfc3076c);
+        
+    
+        var popup_4a8cac21cf5abba2a7e7f581fca3daa2 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_7d5b4021e3325bd2b91f51a2786df993 = $(`<div id="html_7d5b4021e3325bd2b91f51a2786df993" style="width: 100.0%; height: 100.0%;">     <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">         <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">             <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">                 <span>📍</span> Soksan             </div>             <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">                 Code: 15             </span>         </div>                  <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">North Garo Hills</span></div>          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>                 <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">7.72 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>                 <span style="font-size: 13px; font-weight: 700; color: #34d399;">7.53 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">                 <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>                 <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">-0.19 m</span>             </div>         </div>          <div style="margin-bottom: 6px;">             <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.45);">                 Optimal / Normal Range             </span>         </div>          <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">             <span>Depth to water table</span>             <span>Sync: 2025-01-16 18:00</span>         </div>     </div>     </div>`)[0];
+                popup_4a8cac21cf5abba2a7e7f581fca3daa2.setContent(html_7d5b4021e3325bd2b91f51a2786df993);
+            
+        
+
+        circle_marker_bc6e9c3e3727234555f47db03232470f.bindPopup(popup_4a8cac21cf5abba2a7e7f581fca3daa2)
+        ;
+
+        
+    
+    
+            circle_marker_bc6e9c3e3727234555f47db03232470f.bindTooltip(
+                `<div>
+                     
+    <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">
+            <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">
+                <span>📍</span> Soksan
+            </div>
+            <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">
+                Code: 15
+            </span>
+        </div>
+        
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">North Garo Hills</span></div>
+
+        <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>
+                <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">7.72 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>
+                <span style="font-size: 13px; font-weight: 700; color: #34d399;">7.53 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">
+                <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>
+                <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">-0.19 m</span>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 6px;">
+            <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.45);">
+                Optimal / Normal Range
+            </span>
+        </div>
+
+        <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">
+            <span>Depth to water table</span>
+            <span>Sync: 2025-01-16 18:00</span>
+        </div>
+    </div>
+    
+                 </div>`,
+                {
+  "className": "custom-tooltip",
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_8be10463a492c1622b494b3d94a7cd67 = L.circleMarker(
+                [25.5085, 90.60438889],
+                {"bubblingMouseEvents": true, "color": "#ffffff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#10b981", "fillOpacity": 0.88, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2}
+            ).addTo(map_b14be9a237fae066d4b63effbfc3076c);
+        
+    
+        var popup_0114a5e5e7f4600a146a53caccb90941 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_fd5ea72b9c0ee8486c0e32822ee36c13 = $(`<div id="html_fd5ea72b9c0ee8486c0e32822ee36c13" style="width: 100.0%; height: 100.0%;">     <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">         <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">             <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">                 <span>📍</span> Williamnagar             </div>             <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">                 Code: 16             </span>         </div>                  <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">East Garo Hills</span></div>          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>                 <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">5.68 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>                 <span style="font-size: 13px; font-weight: 700; color: #34d399;">5.03 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">                 <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>                 <span style="font-size: 11px; font-weight: 600; color: #10b981;">-0.66 m</span>             </div>         </div>          <div style="margin-bottom: 6px;">             <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.45);">                 Optimal / Normal Range             </span>         </div>          <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">             <span>Depth to water table</span>             <span>Sync: 2025-05-22 06:00</span>         </div>     </div>     </div>`)[0];
+                popup_0114a5e5e7f4600a146a53caccb90941.setContent(html_fd5ea72b9c0ee8486c0e32822ee36c13);
+            
+        
+
+        circle_marker_8be10463a492c1622b494b3d94a7cd67.bindPopup(popup_0114a5e5e7f4600a146a53caccb90941)
+        ;
+
+        
+    
+    
+            circle_marker_8be10463a492c1622b494b3d94a7cd67.bindTooltip(
+                `<div>
+                     
+    <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">
+            <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">
+                <span>📍</span> Williamnagar
+            </div>
+            <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">
+                Code: 16
+            </span>
+        </div>
+        
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">East Garo Hills</span></div>
+
+        <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>
+                <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">5.68 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>
+                <span style="font-size: 13px; font-weight: 700; color: #34d399;">5.03 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">
+                <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>
+                <span style="font-size: 11px; font-weight: 600; color: #10b981;">-0.66 m</span>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 6px;">
+            <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.45);">
+                Optimal / Normal Range
+            </span>
+        </div>
+
+        <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">
+            <span>Depth to water table</span>
+            <span>Sync: 2025-05-22 06:00</span>
+        </div>
+    </div>
+    
+                 </div>`,
+                {
+  "className": "custom-tooltip",
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_cfec549835f33dcf1b917c3e50016808 = L.circleMarker(
+                [25.37611111, 89.88555556],
+                {"bubblingMouseEvents": true, "color": "#ffffff", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ef4444", "fillOpacity": 0.88, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 9, "stroke": true, "weight": 2}
+            ).addTo(map_b14be9a237fae066d4b63effbfc3076c);
+        
+    
+        var popup_43a15e9874398ac10b9a2bd58ce8255b = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_8e8a22357c2eb3446491deef6d70d521 = $(`<div id="html_8e8a22357c2eb3446491deef6d70d521" style="width: 100.0%; height: 100.0%;">     <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">         <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">             <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">                 <span>📍</span> Zikzak_1             </div>             <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">                 Code: 17             </span>         </div>                  <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">South West  Garo Hills</span></div>          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>                 <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">2.18 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">                 <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>                 <span style="font-size: 13px; font-weight: 700; color: #34d399;">2.20 m</span>             </div>             <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">                 <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>                 <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">+0.03 m</span>             </div>         </div>          <div style="margin-bottom: 6px;">             <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.45);">                 Shallow Water Table (High Surface Runoff)             </span>         </div>          <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">             <span>Depth to water table</span>             <span>Sync: 2025-05-21 18:00</span>         </div>     </div>     </div>`)[0];
+                popup_43a15e9874398ac10b9a2bd58ce8255b.setContent(html_8e8a22357c2eb3446491deef6d70d521);
+            
+        
+
+        circle_marker_cfec549835f33dcf1b917c3e50016808.bindPopup(popup_43a15e9874398ac10b9a2bd58ce8255b)
+        ;
+
+        
+    
+    
+            circle_marker_cfec549835f33dcf1b917c3e50016808.bindTooltip(
+                `<div>
+                     
+    <div style="padding: 10px 14px; min-width: 220px; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.4; color: #f8fafc;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px;">
+            <div style="font-size: 14px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 4px;">
+                <span>📍</span> Zikzak_1
+            </div>
+            <span style="font-size: 10px; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; padding: 1px 6px;">
+                Code: 17
+            </span>
+        </div>
+        
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">District: <span style="color: #cbd5e1; font-weight: 600;">South West  Garo Hills</span></div>
+
+        <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Current Observed GWL:</span>
+                <span style="font-size: 13px; font-weight: 700; color: #38bdf8;">2.18 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">Predicted GWL (Model):</span>
+                <span style="font-size: 13px; font-weight: 700; color: #34d399;">2.20 m</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 4px; margin-top: 2px;">
+                <span style="font-size: 10px; color: #64748b;">Telemetry Variance:</span>
+                <span style="font-size: 11px; font-weight: 600; color: #38bdf8;">+0.03 m</span>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 6px;">
+            <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.45);">
+                Shallow Water Table (High Surface Runoff)
+            </span>
+        </div>
+
+        <div style="font-size: 9.5px; color: #64748b; margin-top: 4px; display: flex; justify-content: space-between;">
+            <span>Depth to water table</span>
+            <span>Sync: 2025-05-21 18:00</span>
+        </div>
+    </div>
+    
+                 </div>`,
+                {
+  "className": "custom-tooltip",
+  "sticky": true,
+}
+            );
+        
+    
+            map_b14be9a237fae066d4b63effbfc3076c.fitBounds(
+                [[25.20103333, 89.88555556], [26.0775, 92.45861111]],
+                {}
+            );
+        
+</script>
+</html>

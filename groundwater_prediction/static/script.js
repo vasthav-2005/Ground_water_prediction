@@ -90,24 +90,24 @@ function getISTRollingMonths() {
 }
 
 const STATIONS_COORDS = [
-  { name: 'Amlarem', code: 0, lat: 25.285278, lng: 92.103056 },
-  { name: 'Barengapara', code: 1, lat: 25.201033, lng: 90.310283 },
-  { name: 'Byrnihat', code: 2, lat: 26.077500, lng: 91.875556 },
-  { name: 'Damas_1', code: 3, lat: 25.938192, lng: 90.727392 },
-  { name: 'Jowai', code: 4, lat: 25.436389, lng: 92.193889 },
-  { name: 'Khliehriat', code: 5, lat: 25.344722, lng: 92.366111 },
-  { name: 'Latyrke', code: 6, lat: 25.343333, lng: 92.458611 },
-  { name: 'Mairang', code: 7, lat: 25.558600, lng: 91.625750 },
-  { name: 'Mawkyrwat_1', code: 8, lat: 25.371642, lng: 91.481808 },
-  { name: 'Nongstoin_1', code: 9, lat: 25.544931, lng: 91.238681 },
-  { name: 'Panchiring', code: 10, lat: 25.202250, lng: 91.318917 },
-  { name: 'Phulbari_1', code: 11, lat: 25.877194, lng: 90.029719 },
-  { name: 'Rongjeng_1', code: 12, lat: 25.610172, lng: 90.731239 },
-  { name: 'Saiden', code: 13, lat: 25.884444, lng: 91.882222 },
-  { name: 'Shillong', code: 14, lat: 25.582778, lng: 91.886944 },
-  { name: 'Soksan', code: 15, lat: 25.898100, lng: 90.642533 },
-  { name: 'Williamnagar', code: 16, lat: 25.508500, lng: 90.604389 },
-  { name: 'Zikzak_1', code: 17, lat: 25.376111, lng: 89.885556 }
+  { name: 'Amlarem', code: 0, lat: 25.285278, lng: 92.103056, currentGwl: 47.27, predictedGwl: 47.23, district: 'West Jaintia Hills', classification: 'Moderately Deep Ground Water' },
+  { name: 'Barengapara', code: 1, lat: 25.201033, lng: 90.310283, currentGwl: 4.46, predictedGwl: 4.51, district: 'West Garo Hills', classification: 'Shallow Water Table (High Surface Runoff)' },
+  { name: 'Byrnihat', code: 2, lat: 26.077500, lng: 91.875556, currentGwl: 45.99, predictedGwl: 46.26, district: 'Ri Bhoi', classification: 'Moderately Deep Ground Water' },
+  { name: 'Damas_1', code: 3, lat: 25.938192, lng: 90.727392, currentGwl: 4.40, predictedGwl: 4.40, district: 'North Garo Hills', classification: 'Shallow Water Table (High Surface Runoff)' },
+  { name: 'Jowai', code: 4, lat: 25.436389, lng: 92.193889, currentGwl: 6.61, predictedGwl: 6.68, district: 'West Jaintia Hills', classification: 'Optimal / Normal Range' },
+  { name: 'Khliehriat', code: 5, lat: 25.344722, lng: 92.366111, currentGwl: 23.33, predictedGwl: 23.15, district: 'East Jaintia Hills', classification: 'Optimal / Normal Range' },
+  { name: 'Latyrke', code: 6, lat: 25.343333, lng: 92.458611, currentGwl: 21.91, predictedGwl: 21.04, district: 'East Khasi Hills', classification: 'Optimal / Normal Range' },
+  { name: 'Mairang', code: 7, lat: 25.558600, lng: 91.625750, currentGwl: -6.07, predictedGwl: -6.54, district: 'West Khasi Hills', classification: 'Shallow Water Table (High Surface Runoff)' },
+  { name: 'Mawkyrwat_1', code: 8, lat: 25.371642, lng: 91.481808, currentGwl: 6.45, predictedGwl: 6.00, district: 'South West Khasi Hills', classification: 'Optimal / Normal Range' },
+  { name: 'Nongstoin_1', code: 9, lat: 25.544931, lng: 91.238681, currentGwl: 3.32, predictedGwl: 3.28, district: 'West Khasi Hills', classification: 'Shallow Water Table (High Surface Runoff)' },
+  { name: 'Panchiring', code: 10, lat: 25.202250, lng: 91.318917, currentGwl: 3.67, predictedGwl: 3.68, district: 'South West Khasi Hills', classification: 'Shallow Water Table (High Surface Runoff)' },
+  { name: 'Phulbari_1', code: 11, lat: 25.877194, lng: 90.029719, currentGwl: 0.81, predictedGwl: 0.89, district: 'West Garo Hills', classification: 'Shallow Water Table (High Surface Runoff)' },
+  { name: 'Rongjeng_1', code: 12, lat: 25.610172, lng: 90.731239, currentGwl: 1.51, predictedGwl: 1.46, district: 'East Garo Hills', classification: 'Shallow Water Table (High Surface Runoff)' },
+  { name: 'Saiden', code: 13, lat: 25.884444, lng: 91.882222, currentGwl: 1.99, predictedGwl: 2.10, district: 'Ri Bhoi', classification: 'Shallow Water Table (High Surface Runoff)' },
+  { name: 'Shillong', code: 14, lat: 25.582778, lng: 91.886944, currentGwl: 2.02, predictedGwl: 2.44, district: 'East Khasi Hills', classification: 'Shallow Water Table (High Surface Runoff)' },
+  { name: 'Soksan', code: 15, lat: 25.898100, lng: 90.642533, currentGwl: 7.72, predictedGwl: 7.53, district: 'North Garo Hills', classification: 'Optimal / Normal Range' },
+  { name: 'Williamnagar', code: 16, lat: 25.508500, lng: 90.604389, currentGwl: 5.68, predictedGwl: 5.03, district: 'East Garo Hills', classification: 'Optimal / Normal Range' },
+  { name: 'Zikzak_1', code: 17, lat: 25.376111, lng: 89.885556, currentGwl: 2.18, predictedGwl: 2.20, district: 'South West Garo Hills', classification: 'Shallow Water Table (High Surface Runoff)' }
 ];
 
 let flaskMapInstance = null;
@@ -217,21 +217,48 @@ function initFlaskMap() {
   }).addTo(flaskMapInstance);
 
   STATIONS_COORDS.forEach(st => {
+    let markerColor = '#10b981';
+    if (st.predictedGwl !== undefined) {
+      if (st.predictedGwl < 5.0) markerColor = '#ef4444';
+      else if (st.predictedGwl <= 35.0) markerColor = '#10b981';
+      else if (st.predictedGwl <= 60.0) markerColor = '#f59e0b';
+      else markerColor = '#ef4444';
+    }
+
     const marker = L.circleMarker([st.lat, st.lng], {
       radius: 9,
-      fillColor: '#0284c7',
+      fillColor: markerColor,
       color: '#ffffff',
       weight: 2,
       opacity: 1,
-      fillOpacity: 0.8
+      fillOpacity: 0.85
     }).addTo(flaskMapInstance);
 
-    marker.bindPopup(`
-      <div style="font-family: sans-serif; padding: 2px;">
-        <strong style="color:#0284c7;">📍 ${st.name}</strong><br>
-        <span style="font-size:0.8rem; color:#475569;">Station Code: ${st.code}</span>
+    const tooltipContent = `
+      <div style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif; padding: 6px 8px; color: #f8fafc; min-width: 200px; line-height: 1.4;">
+        <div style="font-weight: 700; font-size: 0.92rem; color: #38bdf8; margin-bottom: 4px; display: flex; align-items: center; justify-content: space-between;">
+          <span>📍 ${st.name}</span>
+          <span style="font-size: 0.68rem; background: rgba(56,189,248,0.15); padding: 1px 5px; border-radius: 4px;">Code: ${st.code}</span>
+        </div>
+        ${st.district ? `<div style="font-size: 0.72rem; color: #94a3b8; margin-bottom: 5px;">District: <strong style="color: #cbd5e1;">${st.district}</strong></div>` : ''}
+        <div style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 5px; padding: 5px 7px; margin-bottom: 5px;">
+          <div style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 3px;">
+            <span style="color: #94a3b8;">Current GWL:</span>
+            <strong style="color: #38bdf8;">${st.currentGwl !== undefined ? st.currentGwl.toFixed(2) + ' m' : 'N/A'}</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.75rem;">
+            <span style="color: #94a3b8;">Predicted GWL:</span>
+            <strong style="color: #34d399;">${st.predictedGwl !== undefined ? st.predictedGwl.toFixed(2) + ' m' : 'N/A'}</strong>
+          </div>
+        </div>
+        <div style="font-size: 0.68rem; color: #7dd3fc; margin-top: 3px;">
+          ${st.classification || 'Optimal / Normal Range'}
+        </div>
       </div>
-    `);
+    `;
+
+    marker.bindPopup(tooltipContent);
+    marker.bindTooltip(tooltipContent, { sticky: true, className: 'custom-tooltip' });
 
     marker.on('click', () => {
       const stationSelect = document.getElementById('station');

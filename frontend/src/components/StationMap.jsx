@@ -46,38 +46,77 @@ const StationMap = ({ stations = [], selectedStation, onSelectStation, predictio
       const lat = st.lat || 25.55;
       const lng = st.lng || 91.30;
       const isSelected = selectedStation && (selectedStation === st.name || selectedStation === String(st.code));
+      
+      const currentVal = st.currentGwl !== undefined ? st.currentGwl : (st.observedGwl !== undefined ? st.observedGwl : null);
+      const isCustomPred = prediction && (prediction.station === st.name || prediction.station_code === st.code);
+      const predictedVal = isCustomPred ? prediction.predicted_gwl_meter : (st.predictedGwl !== undefined ? st.predictedGwl : null);
+      const classification = isCustomPred ? prediction.classification : (st.classification || 'Optimal / Normal Range');
+      
+      const diff = (predictedVal !== null && currentVal !== null) ? (predictedVal - currentVal) : null;
+      const diffStr = diff !== null ? `${diff >= 0 ? '+' : ''}${diff.toFixed(2)} m` : 'N/A';
+
+      // Status indicator color
+      let markerColor = '#10b981'; // Green
+      if (predictedVal !== null) {
+        if (predictedVal < 5.0) markerColor = '#ef4444'; // Red
+        else if (predictedVal <= 35.0) markerColor = '#10b981'; // Green
+        else if (predictedVal <= 60.0) markerColor = '#f59e0b'; // Amber
+        else markerColor = '#ef4444'; // Red
+      }
 
       const circleMarker = L.circleMarker([lat, lng], {
-        radius: isSelected ? 12 : 8,
-        fillColor: isSelected ? '#38bdf8' : '#0284c7',
-        color: isSelected ? '#ffffff' : '#38bdf8',
-        weight: isSelected ? 3 : 1.5,
+        radius: isSelected ? 12 : 9,
+        fillColor: isSelected ? '#38bdf8' : markerColor,
+        color: isSelected ? '#ffffff' : '#f8fafc',
+        weight: isSelected ? 3 : 2,
         opacity: 1,
-        fillOpacity: isSelected ? 0.9 : 0.75,
+        fillOpacity: isSelected ? 0.95 : 0.85,
       }).addTo(map);
 
       const popupHtml = `
-        <div style="font-family: 'Plus Jakarta Sans', sans-serif; padding: 4px 2px; color: #0f172a; min-width: 170px;">
-          <div style="font-weight: 700; font-size: 0.95rem; color: #0284c7; margin-bottom: 4px;">
-            📍 Station: ${st.name}
-          </div>
-          <div style="font-size: 0.8rem; color: #334155; margin-bottom: 2px; font-weight: 600;">
-            Current Observed GWL: <span style="color: #0284c7;">${st.observedGwl !== undefined ? st.observedGwl.toFixed(2) : 'N/A'} m</span>
-          </div>
-          <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 4px;">
-            Depth to Water Table &bull; Code: ${st.code}
-          </div>
-          ${prediction && (prediction.station === st.name || prediction.station_code === st.code) ? `
-            <div style="margin-top: 6px; padding: 4px 6px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 4px; font-size: 0.75rem; color: #166534; font-weight: 600;">
-              Predicted GWL: ${prediction.predicted_gwl_meter?.toFixed(2)} m<br>
-              <span style="font-weight: 500; font-size: 0.7rem;">${prediction.classification}</span>
+        <div style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif; padding: 8px 10px; color: #f8fafc; min-width: 210px; line-height: 1.4;">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 4px;">
+            <div style="font-weight: 700; font-size: 0.95rem; color: #38bdf8; display: flex; align-items: center; gap: 4px;">
+              <span>📍</span> ${st.name}
             </div>
-          ` : ''}
+            <span style="font-size: 0.7rem; font-weight: 600; background: rgba(56, 189, 248, 0.15); color: #38bdf8; padding: 1px 6px; border-radius: 4px; border: 1px solid rgba(56, 189, 248, 0.3);">
+              Code ${st.code}
+            </span>
+          </div>
+
+          ${st.district ? `<div style="font-size: 0.72rem; color: #94a3b8; margin-bottom: 6px;">District: <strong style="color: #cbd5e1;">${st.district}</strong></div>` : ''}
+
+          <div style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 6px 8px; margin-bottom: 6px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <span style="font-size: 0.75rem; color: #94a3b8;">Current Observed GWL:</span>
+              <strong style="color: #38bdf8; font-size: 0.88rem;">${currentVal !== null ? currentVal.toFixed(2) + ' m' : 'N/A'}</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <span style="font-size: 0.75rem; color: #94a3b8;">Predicted GWL (Model):</span>
+              <strong style="color: #34d399; font-size: 0.88rem;">${predictedVal !== null ? predictedVal.toFixed(2) + ' m' : 'N/A'}</strong>
+            </div>
+            ${diff !== null ? `
+              <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 3px; margin-top: 2px;">
+                <span style="font-size: 0.7rem; color: #64748b;">Telemetry Variance:</span>
+                <span style="font-size: 0.75rem; font-weight: 600; color: ${diff > 0.5 ? '#ef4444' : (diff < -0.5 ? '#10b981' : '#38bdf8')};">${diffStr}</span>
+              </div>
+            ` : ''}
+          </div>
+
+          <div style="margin-top: 4px;">
+            <span style="display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 0.68rem; font-weight: 600; background: rgba(56, 189, 248, 0.12); color: #7dd3fc; border: 1px solid rgba(56, 189, 248, 0.25);">
+              ${classification}
+            </span>
+          </div>
+
+          <div style="font-size: 0.65rem; color: #64748b; margin-top: 4px; text-align: right;">
+            Depth to water table (bgl)
+          </div>
         </div>
       `;
 
       circleMarker.bindPopup(popupHtml);
-      circleMarker.bindTooltip(popupHtml, { sticky: true });
+      circleMarker.bindTooltip(popupHtml, { sticky: true, className: 'custom-tooltip' });
 
       circleMarker.on('click', () => {
         if (onSelectStation) {
