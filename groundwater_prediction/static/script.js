@@ -351,3 +351,37 @@ function hideError() {
   alertBox.classList.remove('d-flex');
   alertBox.classList.add('d-none');
 }
+
+// Map Mode Switcher (Folium vs Leaflet)
+function switchMapMode(mode) {
+  const foliumWrapper = document.getElementById('foliumMapWrapper');
+  const flaskMap = document.getElementById('flaskMap');
+  const btnFolium = document.getElementById('btnModeFolium');
+  const btnLeaflet = document.getElementById('btnModeLeaflet');
+
+  if (mode === 'leaflet') {
+    if (foliumWrapper) foliumWrapper.style.display = 'none';
+    if (flaskMap) {
+      flaskMap.style.display = 'block';
+      if (flaskMapInstance) {
+        setTimeout(() => flaskMapInstance.invalidateSize(), 150);
+      }
+    }
+    if (btnFolium) {
+      btnFolium.className = 'btn btn-outline-secondary btn-sm px-3 text-light';
+    }
+    if (btnLeaflet) {
+      btnLeaflet.className = 'btn btn-primary btn-sm px-3';
+    }
+  } else {
+    if (flaskMap) flaskMap.style.display = 'none';
+    if (foliumWrapper) foliumWrapper.style.display = 'block';
+    if (btnFolium) {
+      btnFolium.className = 'btn btn-primary btn-sm px-3';
+    }
+    if (btnLeaflet) {
+      btnLeaflet.className = 'btn btn-outline-secondary btn-sm px-3 text-light';
+    }
+  }
+}
+
